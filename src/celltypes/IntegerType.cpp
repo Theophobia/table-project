@@ -1,24 +1,25 @@
 #include "IntegerType.h"
+#include "../exception/ParseError.h"
 
-IntegerType::IntegerType(long long number) {
+IntegerType::IntegerType(std::int64_t number) {
 	this->number = number;
 }
 
-long long IntegerType::getNumber() const {
+std::int64_t IntegerType::getNumber() const {
 	return number;
 }
 
-void IntegerType::setNumber(long long number) {
+void IntegerType::setNumber(std::int64_t number) {
 	this->number = number;
 }
 
-long IntegerType::getClassId() const {
-	return -1240479155001108647;
-}
+//int IntegerType::getClassId() const {
+//	return -1240479155001108647;
+//}
 
 void IntegerType::tryParse(const std::string & str) {
 	bool isNegative = false;
-	long long tmp = 0;
+	std::int64_t tmp = 0;
 	const std::size_t size = str.size();
 	
 	// Check for sign
@@ -35,7 +36,7 @@ void IntegerType::tryParse(const std::string & str) {
 	// Loop over rest
 	for (; i < size; i++) {
 		if (!std::isdigit(str[i])) {
-			throw std::runtime_error("Illegal character while parsing integer");
+			throw ParseError<IntegerType>("Illegal character while parsing integer");
 		}
 		
 		tmp = 10 * tmp + (str[i] - '0');

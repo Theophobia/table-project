@@ -1,12 +1,13 @@
-#ifndef TYPE_H_GADbBeWXLQTbXSMdTfnL
-#define TYPE_H_GADbBeWXLQTbXSMdTfnL
+#ifndef TABLE_TYPE_H
+#define TABLE_TYPE_H
 
 #include <ostream>
 
 class Type {
 
 public:
-	virtual long getClassId() const = 0;
+	virtual ~Type();
+//	virtual int getClassId() const = 0;
 	virtual void tryParse(const std::string & str) = 0;
 	virtual std::string toString() const = 0;
 	

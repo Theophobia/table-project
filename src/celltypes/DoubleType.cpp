@@ -1,22 +1,23 @@
-#include "FloatingType.h"
+#include "DoubleType.h"
+#include "../exception/ParseError.h"
 
-FloatingType::FloatingType(long double number) {
+DoubleType::DoubleType(long double number) {
 	this->number = number;
 }
 
-long double FloatingType::getNumber() const {
+long double DoubleType::getNumber() const {
 	return number;
 }
 
-void FloatingType::setNumber(long double number) {
+void DoubleType::setNumber(long double number) {
 	this->number = number;
 }
 
-long FloatingType::getClassId() const {
-	return 756064317340920913;
-}
+//int DoubleType::getClassId() const {
+//	return 756064317340920913;
+//}
 
-void FloatingType::tryParse(const std::string & str) {
+void DoubleType::tryParse(const std::string & str) {
 	bool isNegative = false;
 	long double tmp = 0;
 	const std::size_t size = str.size();
@@ -41,7 +42,7 @@ void FloatingType::tryParse(const std::string & str) {
 		}
 		
 		if (!std::isdigit(str[i])) {
-			throw std::runtime_error("Illegal character while parsing floating point, nondigit in whole part");
+			throw ParseError<DoubleType>("Illegal character while parsing floating point, nondigit in whole part");
 		}
 		
 		tmp = 10 * tmp + (str[i] - '0');
@@ -53,7 +54,7 @@ void FloatingType::tryParse(const std::string & str) {
 	long double magnitude = 0.1;
 	for (; i < size; i++) {
 		if (!std::isdigit(str[i])) {
-			throw std::runtime_error("Illegal character while parsing floating point, nondigit in fractional part");
+			throw ParseError<DoubleType>("Illegal character while parsing floating point, nondigit in fractional part");
 		}
 		
 		int digit = str[i] - '0';
@@ -69,10 +70,10 @@ void FloatingType::tryParse(const std::string & str) {
 	// Check if has both whole and fractional part
 	// ex: ".1", "1.0", "1.0000"
 	if (!hasWholePart) {
-		throw std::invalid_argument("No whole part while parsing floating point");
+		throw ParseError<DoubleType>("No whole part while parsing floating point");
 	}
 	if (!hasFractionalPart) {
-		throw std::invalid_argument("No fractional part while parsing floating point");
+		throw ParseError<DoubleType>("No fractional part while parsing floating point");
 	}
 	
 	// Add negative sign if needed
@@ -83,6 +84,6 @@ void FloatingType::tryParse(const std::string & str) {
 	number = tmp;
 }
 
-std::string FloatingType::toString() const {
+std::string DoubleType::toString() const {
 	return std::to_string(number);
 }

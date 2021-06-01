@@ -1,15 +1,11 @@
 #include <iostream>
 
-#include "Type.h"
-#include "IntegerType.h"
-#include "FloatingType.h"
+#include "celltypes/base/Type.h"
+#include "celltypes/IntegerType.h"
+#include "celltypes/DoubleType.h"
+#include "exception/ParseError.h"
 
 int main() {
-	IntegerType it(123);
-	FloatingType ft(123.4);
-	
-	std::cout << it << std::endl;
-	std::cout << ft << std::endl;
-
+	ParseError<DoubleType> be = ParseError<DoubleType>("asd");
 	return 0;
 }
