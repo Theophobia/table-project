@@ -4,7 +4,6 @@
 #include "base/Type.h"
 
 class StringType : public Type {
-private:
 
 protected:
 	std::string text;
@@ -16,9 +15,10 @@ public:
 	const std::string & getText() const;
 	void setText(const std::string & text);
 	
-//	int getClassId() const override;
 	void tryParse(const std::string & str) override;
 	std::string toString() const override;
+	
+	bool operator==(const Type & t) const override;
 };
 
 #endif

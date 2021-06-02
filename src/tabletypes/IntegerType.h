@@ -9,21 +9,29 @@
  *
  */
 class IntegerType : public Type {
-private:
 
 protected:
 	std::int64_t number = 0;
-	
+
 public:
 	IntegerType() = default;
 	explicit IntegerType(std::int64_t number);
 	
+	~IntegerType() = default;
+	
+	IntegerType(const IntegerType & other);
+	IntegerType & operator=(const IntegerType & other);
+	
+	IntegerType(IntegerType && other) noexcept;
+	IntegerType & operator=(IntegerType && other) noexcept;
+	
 	std::int64_t getNumber() const;
 	void setNumber(std::int64_t number);
 	
-//	int getClassId() const override;
 	void tryParse(const std::string & str) override;
 	std::string toString() const override;
+	
+	bool operator==(const Type & t) const override;
 };
 
 #endif

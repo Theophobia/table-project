@@ -1,7 +1,7 @@
 #ifndef TABLE_PARSEERROR_H
 #define TABLE_PARSEERROR_H
 
-#include "../celltypes/base/Type.h"
+#include "../tabletypes/base/Type.h"
 
 template<class T>
 class ParseError final : public std::exception {
@@ -23,7 +23,6 @@ private:
 		void (* p)(T) = constraints;
 	}
 
-protected:
 	std::string msg;
 
 public:

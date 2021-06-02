@@ -13,10 +13,6 @@ void DoubleType::setNumber(long double number) {
 	this->number = number;
 }
 
-//int DoubleType::getClassId() const {
-//	return 756064317340920913;
-//}
-
 void DoubleType::tryParse(const std::string & str) {
 	bool isNegative = false;
 	long double tmp = 0;
@@ -86,4 +82,18 @@ void DoubleType::tryParse(const std::string & str) {
 
 std::string DoubleType::toString() const {
 	return std::to_string(number);
+}
+
+bool DoubleType::operator==(const Type & t) const {
+	const DoubleType * casted = dynamic_cast<const DoubleType *>(&t);
+	
+	if (casted == nullptr) {
+		return false;
+	}
+	
+	if (casted == this) {
+		return true;
+	}
+	
+	return this->getNumber() == casted->getNumber();
 }

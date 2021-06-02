@@ -1,11 +1,20 @@
+#define TABLE_TEST
+
 #include <iostream>
 
-#include "celltypes/base/Type.h"
-#include "celltypes/IntegerType.h"
-#include "celltypes/DoubleType.h"
+#include "tabletypes/base/Type.h"
+#include "tabletypes/IntegerType.h"
+#include "tabletypes/DoubleType.h"
 #include "exception/ParseError.h"
+#include "table/Table.h"
 
 int main() {
-	ParseError<DoubleType> be = ParseError<DoubleType>("asd");
+	Table t;
+	
+	t.put(3, 3, IntegerType(123));
+	
+	const IntegerType & it = t.getInteger(3, 3);
+	const DoubleType & dt = t.getDouble(3, 3);
+	
 	return 0;
 }

@@ -5,6 +5,26 @@ IntegerType::IntegerType(std::int64_t number) {
 	this->number = number;
 }
 
+IntegerType::IntegerType(const IntegerType & other) {
+	*this = other;
+}
+
+IntegerType & IntegerType::operator=(const IntegerType & other) {
+	this->number = other.number;
+	return *this;
+}
+
+IntegerType::IntegerType(IntegerType && other) noexcept {
+	*this = std::move(other);
+}
+
+IntegerType & IntegerType::operator=(IntegerType && other) noexcept {
+	this->number = other.number;
+	
+	other.number = 0;
+	return *this;
+}
+
 std::int64_t IntegerType::getNumber() const {
 	return number;
 }
@@ -12,10 +32,6 @@ std::int64_t IntegerType::getNumber() const {
 void IntegerType::setNumber(std::int64_t number) {
 	this->number = number;
 }
-
-//int IntegerType::getClassId() const {
-//	return -1240479155001108647;
-//}
 
 void IntegerType::tryParse(const std::string & str) {
 	bool isNegative = false;
@@ -52,4 +68,18 @@ void IntegerType::tryParse(const std::string & str) {
 
 std::string IntegerType::toString() const {
 	return std::to_string(number);
+}
+
+bool IntegerType::operator==(const Type & t) const {
+	const IntegerType * casted = dynamic_cast<const IntegerType *>(&t);
+	
+	if (casted == nullptr) {
+		return false;
+	}
+	
+	if (casted == this) {
+		return true;
+	}
+	
+	return this->getNumber() == casted->getNumber();
 }

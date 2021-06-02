@@ -9,20 +9,23 @@ add_executable(
 
 	src/main.cpp
 
-	src/celltypes/base/Type.cpp
-	src/celltypes/IntegerType.cpp
-	src/celltypes/DoubleType.cpp
-	src/celltypes/StringType.cpp
-
+	src/tabletypes/base/Type.cpp
+	src/tabletypes/IntegerType.cpp
+	src/tabletypes/DoubleType.cpp
+	src/tabletypes/StringType.cpp
+	src/tabletypes/FormulaType.cpp
+	src/table/Table.cpp
 )
 
 add_executable(
 	Test
 
-	test/main/main.cpp
+	test/main/TestEntry.cpp
 
-	src/celltypes/base/Type.cpp
-	src/celltypes/IntegerType.cpp
-	src/celltypes/DoubleType.cpp
-	src/celltypes/StringType.cpp
+	src/tabletypes/base/Type.cpp
+	src/tabletypes/IntegerType.cpp
+	src/tabletypes/DoubleType.cpp
+	src/tabletypes/StringType.cpp
+	src/tabletypes/FormulaType.cpp
+	src/table/Table.cpp
 )

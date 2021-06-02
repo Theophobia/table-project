@@ -13,10 +13,6 @@ void StringType::setText(const std::string & text) {
 	this->text = text;
 }
 
-//int StringType::getClassId() const {
-//	return 0;
-//}
-
 void StringType::tryParse(const std::string & str) {
 	if (str.size() < 2) {
 		throw ParseError<StringType>("Minimum length not met");
@@ -45,4 +41,18 @@ void StringType::tryParse(const std::string & str) {
 
 std::string StringType::toString() const {
 	return '"' + text + '"';
+}
+
+bool StringType::operator==(const Type & t) const {
+	const StringType * casted = dynamic_cast<const StringType *>(&t);
+	
+	if (casted == nullptr) {
+		return false;
+	}
+	
+	if (casted == this) {
+		return true;
+	}
+	
+	return this->getText() == casted->getText();
 }
