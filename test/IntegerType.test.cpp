@@ -1,0 +1,55 @@
+#include "main/doctest.h"
+#include "main/TestUtil.h"
+
+#include "../src/tabletypes/IntegerType.h"
+
+TEST_CASE("IntegerType_tryParse_NormalInteger_NoThrow") {
+	// Arrange
+	IntegerType it;
+	
+	// Act and Assert
+	REQUIRE_NOTHROW(it.tryParse("123"));
+	REQUIRE(123 == it.getNumber());
+}
+
+TEST_CASE("IntegerType_tryParse_LeadingZeros_NoThrow") {
+	// Arrange
+	IntegerType it;
+	
+	// Act and Assert
+	REQUIRE_NOTHROW(it.tryParse("000123"));
+	REQUIRE(123 == it.getNumber());
+}
+
+TEST_CASE("IntegerType_tryParse_OnlyZeros_NoThrow") {
+	// Arrange
+	IntegerType it;
+	
+	// Act and Assert
+	REQUIRE_NOTHROW(it.tryParse("00000"));
+	REQUIRE(0 == it.getNumber());
+}
+
+TEST_CASE("IntegerType_tryParse_DoublePassed_Throws") {
+	// Arrange
+	IntegerType it;
+	
+	// Act and Assert
+	REQUIRE_THROWS(it.tryParse("123.4"));
+}
+
+TEST_CASE("IntegerType_tryParse_NumberWithLetter_Throws") {
+	// Arrange
+	IntegerType it;
+	
+	// Act and Assert
+	REQUIRE_THROWS(it.tryParse("1234a"));
+}
+
+TEST_CASE("IntegerType_tryParse_NumberWithString_Throws") {
+	// Arrange
+	IntegerType it;
+	
+	// Act and Assert
+	REQUIRE_THROWS(it.tryParse("\"1234\""));
+}
