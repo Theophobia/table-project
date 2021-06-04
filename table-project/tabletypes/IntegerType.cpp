@@ -1,5 +1,5 @@
-#include "IntegerType.h"
-#include "../exception/ParseError.h"
+#include <table-project/tabletypes/IntegerType.h>
+#include <table-project/exception/ParseError.h>
 
 IntegerType::IntegerType(std::int64_t number) {
 	this->number = number;

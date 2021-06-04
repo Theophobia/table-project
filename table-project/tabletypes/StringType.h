@@ -1,7 +1,6 @@
-#ifndef TABLE_STRINGTYPE_H
-#define TABLE_STRINGTYPE_H
+#pragma once
 
-#include "base/Type.h"
+#include "Type.h"
 
 class StringType : public Type {
 
@@ -20,5 +19,3 @@ public:
 	
 	bool operator==(const Type & t) const override;
 };
-
-#endif

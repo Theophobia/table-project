@@ -1,5 +1,4 @@
-#ifndef TABLE_NOSUCHELEMENTERROR_H
-#define TABLE_NOSUCHELEMENTERROR_H
+#pragma once
 
 #include <exception>
 #include <string>
@@ -42,5 +41,3 @@ public:
 		return msg.c_str();
 	}
 };
-
-#endif //TABLE_NOSUCHELEMENTERROR_H

@@ -1,7 +1,6 @@
-#ifndef TABLE_INTEGERTYPE_H
-#define TABLE_INTEGERTYPE_H
+#pragma once
 
-#include "base/Type.h"
+#include "Type.h"
 
 /**
  * Type used in cells to represent a 64-bit integer.
@@ -33,5 +32,3 @@ public:
 	
 	bool operator==(const Type & t) const override;
 };
-
-#endif

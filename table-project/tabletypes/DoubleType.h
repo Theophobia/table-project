@@ -1,7 +1,6 @@
-#ifndef TABLE_DOUBLETYPE_H
-#define TABLE_DOUBLETYPE_H
+#pragma once
 
-#include "base/Type.h"
+#include "Type.h"
 
 class DoubleType : public Type {
 
@@ -20,5 +19,3 @@ public:
 	
 	bool operator==(const Type & t) const override;
 };
-
-#endif

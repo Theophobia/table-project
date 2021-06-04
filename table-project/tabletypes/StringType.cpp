@@ -1,5 +1,5 @@
-#include "StringType.h"
-#include "../exception/ParseError.h"
+#include <table-project/tabletypes/StringType.h>
+#include <table-project/exception/ParseError.h>
 
 StringType::StringType(const std::string & text) {
 	this->text = text;
@@ -40,7 +40,8 @@ void StringType::tryParse(const std::string & str) {
 }
 
 std::string StringType::toString() const {
-	return '"' + text + '"';
+//	return '"' + text + '"';
+	return text;
 }
 
 bool StringType::operator==(const Type & t) const {

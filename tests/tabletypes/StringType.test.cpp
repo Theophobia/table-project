@@ -1,6 +1,6 @@
-#include "main/doctest.h"
+#include <tests/doctest.h>
 
-#include "../src/tabletypes/StringType.h"
+#include <table-project/tabletypes/StringType.h>
 
 TEST_CASE("StringType_tryParse_SurroundedString_NoThrow") {
     // Arrange

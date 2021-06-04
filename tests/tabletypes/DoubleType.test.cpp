@@ -1,7 +1,7 @@
-#include "main/doctest.h"
-#include "main/TestUtil.h"
+#include <tests/doctest.h>
+#include <tests/util/TestUtil.h>
 
-#include "../src/tabletypes/DoubleType.h"
+#include <table-project/tabletypes/DoubleType.h>
 
 TEST_CASE("DoubleType_tryParse_NormalDouble_NoThrow") {
 	// Arrange

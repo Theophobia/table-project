@@ -1,5 +1,4 @@
-#ifndef TABLE_TESTUTIL_H
-#define TABLE_TESTUTIL_H
+#pragma once
 
 class TestUtil {
 
@@ -13,5 +12,3 @@ public:
 		return diff < epsilon;
 	}
 };
-
-#endif //TABLE_TESTUTIL_H

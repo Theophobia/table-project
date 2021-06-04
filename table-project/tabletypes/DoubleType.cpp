@@ -1,5 +1,5 @@
-#include "DoubleType.h"
-#include "../exception/ParseError.h"
+#include <table-project/tabletypes/DoubleType.h>
+#include <table-project/exception/ParseError.h>
 
 DoubleType::DoubleType(long double number) {
 	this->number = number;

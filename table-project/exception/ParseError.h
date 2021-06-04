@@ -1,7 +1,4 @@
-#ifndef TABLE_PARSEERROR_H
-#define TABLE_PARSEERROR_H
-
-#include "../tabletypes/base/Type.h"
+#pragma once
 
 template<class T>
 class ParseError final : public std::exception {
@@ -64,5 +61,3 @@ public:
 		return msg.c_str();
 	}
 };
-
-#endif //TABLE_PARSEERROR_H

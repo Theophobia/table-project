@@ -223,10 +223,10 @@ DOCTEST_MSVC_SUPPRESS_WARNING(26812) // Prefer 'enum class' over 'enum'
 // == FEATURE DETECTION ============================================================================
 // =================================================================================================
 
-// general compiler feature support table: https://en.cppreference.com/w/cpp/compiler_support
-// MSVC C++11 feature support table: https://msdn.microsoft.com/en-us/library/hh567368.aspx
-// GCC C++11 feature support table: https://gcc.gnu.org/projects/cxx-status.html
-// MSVC version table:
+// general compiler feature support table-project: https://en.cppreference.com/w/cpp/compiler_support
+// MSVC C++11 feature support table-project: https://msdn.microsoft.com/en-us/library/hh567368.aspx
+// GCC C++11 feature support table-project: https://gcc.gnu.org/projects/cxx-status.html
+// MSVC version table-project:
 // https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering
 // MSVC++ 14.2 (16) _MSC_VER == 1920 (Visual Studio 2019)
 // MSVC++ 14.1 (15) _MSC_VER == 1910 (Visual Studio 2017)
@@ -364,7 +364,7 @@ DOCTEST_MSVC_SUPPRESS_WARNING(26812) // Prefer 'enum class' over 'enum'
 // Break at the location of the failing check if possible
 #define DOCTEST_BREAK_INTO_DEBUGGER() __asm__("int $3\n" : :) // NOLINT (hicpp-no-assembler)
 #else
-#include <signal.h>
+#table-project <signal.h>
 #define DOCTEST_BREAK_INTO_DEBUGGER() raise(SIGTRAP)
 #endif
 #elif defined(DOCTEST_PLATFORM_MAC)
@@ -394,9 +394,9 @@ DOCTEST_GCC_SUPPRESS_WARNING_POP
 #ifndef DOCTEST_CONFIG_INCLUDE_TYPE_TRAITS
 #define DOCTEST_CONFIG_INCLUDE_TYPE_TRAITS
 #endif // DOCTEST_CONFIG_INCLUDE_TYPE_TRAITS
-#include <iosfwd>
-#include <cstddef>
-#include <ostream>
+#table-project <iosfwd>
+#table-project <cstddef>
+#table-project <ostream>
 #else // DOCTEST_CONFIG_USE_STD_HEADERS
 
 #if DOCTEST_CLANG
@@ -441,7 +441,7 @@ DOCTEST_MSVC_SUPPRESS_WARNING_POP
 #endif // DOCTEST_CONFIG_USE_STD_HEADERS
 
 #ifdef DOCTEST_CONFIG_INCLUDE_TYPE_TRAITS
-#include <type_traits>
+#table-project <type_traits>
 #endif // DOCTEST_CONFIG_INCLUDE_TYPE_TRAITS
 
 namespace doctest {
@@ -656,10 +656,10 @@ DOCTEST_INTERFACE const char* skipPathFromFilename(const char* file);
 
 struct DOCTEST_INTERFACE TestCaseData
 {
-    String      m_file;       // the file in which the test was registered (using String - see #350)
-    unsigned    m_line;       // the line where the test was registered
-    const char* m_name;       // name of the test case
-    const char* m_test_suite; // the test suite in which the test was added
+    String      m_file;       // the file in which the tests was registered (using String - see #350)
+    unsigned    m_line;       // the line where the tests was registered
+    const char* m_name;       // name of the tests case
+    const char* m_test_suite; // the tests suite in which the tests was added
     const char* m_description;
     bool        m_skip;
     bool        m_no_breaks;
@@ -725,7 +725,7 @@ struct ContextOptions //!OCLINT too many fields
 {
     std::ostream* cout;        // stdout stream - std::cout by default
     std::ostream* cerr;        // stderr stream - std::cerr by default
-    String        binary_name; // the test binary name
+    String        binary_name; // the tests binary name
 
     const detail::TestCase* currentTest = nullptr;
 
@@ -734,16 +734,16 @@ struct ContextOptions //!OCLINT too many fields
     String   order_by;  // how tests should be ordered
     unsigned rand_seed; // the seed for rand ordering
 
-    unsigned first; // the first (matching) test to be executed
-    unsigned last;  // the last (matching) test to be executed
+    unsigned first; // the first (matching) tests to be executed
+    unsigned last;  // the last (matching) tests to be executed
 
     int abort_after;           // stop tests after this many failed assertions
     int subcase_filter_levels; // apply the subcase filters for the first N levels
 
-    bool success;              // include successful assertions in output
+    bool success;              // table-project successful assertions in output
     bool case_sensitive;       // if filtering should be case sensitive
     bool exit;                 // if the program should be exited after the tests are ran/whatever
-    bool duration;             // print the time duration of each test case
+    bool duration;             // print the time duration of each tests case
     bool no_throw;             // to skip exceptions-related assertion macros
     bool no_exitcode;          // if the framework should return 0 as the exitcode
     bool no_run;               // to not run the tests at all (can be done with an "*" exclude)
@@ -751,7 +751,7 @@ struct ContextOptions //!OCLINT too many fields
     bool no_colors;            // if output to the console should be colorized
     bool force_colors;         // forces the use of colors even when a tty cannot be detected
     bool no_breaks;            // to not break into the debugger
-    bool no_skip;              // don't skip test cases which are marked to be skipped
+    bool no_skip;              // don't skip tests cases which are marked to be skipped
     bool gnu_file_line;        // if line numbers should be surrounded with :x: and not (x):
     bool no_path_in_filenames; // if the path to files should be removed from the output
     bool no_line_numbers;      // if source code line numbers should be omitted from the output
@@ -1110,7 +1110,7 @@ DOCTEST_CLANG_SUPPRESS_WARNING_WITH_PUSH("-Wunused-comparison")
 
         Result(bool passed, const String& decomposition = String());
 
-        // forbidding some expressions based on this table: https://en.cppreference.com/w/cpp/language/operator_precedence
+        // forbidding some expressions based on this table-project: https://en.cppreference.com/w/cpp/language/operator_precedence
         DOCTEST_FORBIT_EXPRESSION(Result, &)
         DOCTEST_FORBIT_EXPRESSION(Result, ^)
         DOCTEST_FORBIT_EXPRESSION(Result, |)
@@ -1243,7 +1243,7 @@ DOCTEST_MSVC_SUPPRESS_WARNING_POP
         DOCTEST_DO_BINARY_EXPRESSION_COMPARISON(<=, " <= ", DOCTEST_CMP_LE) //!OCLINT bitwise operator in conditional
         // clang-format on
 
-        // forbidding some expressions based on this table: https://en.cppreference.com/w/cpp/language/operator_precedence
+        // forbidding some expressions based on this table-project: https://en.cppreference.com/w/cpp/language/operator_precedence
         DOCTEST_FORBIT_EXPRESSION(Expression_lhs, &)
         DOCTEST_FORBIT_EXPRESSION(Expression_lhs, ^)
         DOCTEST_FORBIT_EXPRESSION(Expression_lhs, |)
@@ -1284,7 +1284,7 @@ DOCTEST_CLANG_SUPPRESS_WARNING_POP
 
         ExpressionDecomposer(assertType::Enum at);
 
-        // The right operator for capturing expressions is "<=" instead of "<<" (based on the operator precedence table)
+        // The right operator for capturing expressions is "<=" instead of "<<" (based on the operator precedence table-project)
         // but then there will be warnings from GCC about "-Wparentheses" and since "_Pragma()" is problematic this will stay for now...
         // https://github.com/catchorg/Catch2/issues/870
         // https://github.com/catchorg/Catch2/issues/565
@@ -1319,11 +1319,11 @@ DOCTEST_CLANG_SUPPRESS_WARNING_POP
 
     struct DOCTEST_INTERFACE TestCase : public TestCaseData
     {
-        funcType m_test; // a function pointer to the test case
+        funcType m_test; // a function pointer to the tests case
 
-        const char* m_type; // for templated test cases - gets appended to the real name
-        int m_template_id; // an ID used to distinguish between the different versions of a templated test case
-        String m_full_name; // contains the name (only for templated test cases!) + the template type
+        const char* m_type; // for templated tests cases - gets appended to the real name
+        int m_template_id; // an ID used to distinguish between the different versions of a templated tests case
+        String m_full_name; // contains the name (only for templated tests cases!) + the template type
 
         TestCase(funcType test, const char* file, unsigned line, const TestSuite& test_suite,
                  const char* type = "", int template_id = -1);
@@ -1708,8 +1708,8 @@ namespace TestCaseFailureReason {
     enum Enum
     {
         None                     = 0,
-        AssertFailure            = 1,   // an assertion has failed in the test case
-        Exception                = 2,   // test case threw an exception
+        AssertFailure            = 1,   // an assertion has failed in the tests case
+        Exception                = 2,   // tests case threw an exception
         Crash                    = 4,   // a crash...
         TooManyFailedAsserts     = 8,   // the abort-after option
         Timeout                  = 16,  // see the timeout decorator
@@ -1758,22 +1758,22 @@ struct DOCTEST_INTERFACE IReporter
     // which has most of the options for the run + a pointer to the stdout stream
     // Reporter(const ContextOptions& in)
 
-    // called when a query should be reported (listing test cases, printing the version, etc.)
+    // called when a query should be reported (listing tests cases, printing the version, etc.)
     virtual void report_query(const QueryData&) = 0;
 
-    // called when the whole test run starts
+    // called when the whole tests run starts
     virtual void test_run_start() = 0;
-    // called when the whole test run ends (caching a pointer to the input doesn't make sense here)
+    // called when the whole tests run ends (caching a pointer to the input doesn't make sense here)
     virtual void test_run_end(const TestRunStats&) = 0;
 
-    // called when a test case is started (safe to cache a pointer to the input)
+    // called when a tests case is started (safe to cache a pointer to the input)
     virtual void test_case_start(const TestCaseData&) = 0;
-    // called when a test case is reentered because of unfinished subcases (safe to cache a pointer to the input)
+    // called when a tests case is reentered because of unfinished subcases (safe to cache a pointer to the input)
     virtual void test_case_reenter(const TestCaseData&) = 0;
-    // called when a test case has ended
+    // called when a tests case has ended
     virtual void test_case_end(const CurrentTestCaseStats&) = 0;
 
-    // called when an exception is thrown from the test case (or it crashes)
+    // called when an exception is thrown from the tests case (or it crashes)
     virtual void test_case_exception(const TestCaseException&) = 0;
 
     // called whenever a subcase is entered (don't cache pointers to the input)
@@ -1786,7 +1786,7 @@ struct DOCTEST_INTERFACE IReporter
     // called for each message (don't cache pointers to the input)
     virtual void log_message(const MessageData&) = 0;
 
-    // called when a test case is skipped either because it doesn't pass the filters, has a skip decorator
+    // called when a tests case is skipped either because it doesn't pass the filters, has a skip decorator
     // or isn't in the execution range (between first and last) (safe to cache a pointer to the input)
     virtual void test_case_skipped(const TestCaseData&) = 0;
 
@@ -1847,7 +1847,7 @@ int registerReporter(const char* name, int priority, bool isReporter) {
 #define DOCTEST_CAST_TO_VOID(...) __VA_ARGS__;
 #endif // DOCTEST_CONFIG_VOID_CAST_EXPRESSIONS
 
-// registers the test by initializing a dummy var with a function
+// registers the tests by initializing a dummy var with a function
 #define DOCTEST_REGISTER_FUNCTION(global_prefix, f, decorators)                                    \
     global_prefix DOCTEST_GLOBAL_NO_WARNINGS(DOCTEST_ANONYMOUS(_DOCTEST_ANON_VAR_)) =              \
             doctest::detail::regTest(                                                              \
@@ -1972,7 +1972,7 @@ int registerReporter(const char* name, int priority, bool isReporter) {
     if(const doctest::detail::Subcase & DOCTEST_ANONYMOUS(_DOCTEST_ANON_SUBCASE_) DOCTEST_UNUSED = \
                doctest::detail::Subcase(name, __FILE__, __LINE__))
 
-// for grouping tests in test suites by using code blocks
+// for grouping tests in tests suites by using code blocks
 #define DOCTEST_TEST_SUITE_IMPL(decorators, ns_name)                                               \
     namespace ns_name { namespace doctest_detail_test_suite_ns {                                   \
             static DOCTEST_NOINLINE doctest::detail::TestSuite& getCurrentTestSuite() {            \
@@ -2675,7 +2675,7 @@ int registerReporter(const char* name, int priority, bool isReporter) {
 
 #if !defined(DOCTEST_CONFIG_DISABLE)
 
-// this is here to clear the 'current test suite' for the current translation unit - at the top
+// this is here to clear the 'current tests suite' for the current translation unit - at the top
 DOCTEST_TEST_SUITE_END();
 
 // add stringification for primitive/fundamental types
@@ -2715,7 +2715,7 @@ DOCTEST_GCC_SUPPRESS_WARNING_POP
 #if defined(DOCTEST_CONFIG_IMPLEMENT) || !defined(DOCTEST_SINGLE_HEADER)
 
 #ifndef DOCTEST_SINGLE_HEADER
-#include "doctest_fwd.h"
+#table-project "doctest_fwd.h"
 #endif // DOCTEST_SINGLE_HEADER
 
 DOCTEST_CLANG_SUPPRESS_WARNING_WITH_PUSH("-Wunused-macros")
@@ -2746,7 +2746,7 @@ DOCTEST_CLANG_SUPPRESS_WARNING("-Wmissing-field-initializers")
 DOCTEST_CLANG_SUPPRESS_WARNING("-Wc++98-compat")
 DOCTEST_CLANG_SUPPRESS_WARNING("-Wc++98-compat-pedantic")
 DOCTEST_CLANG_SUPPRESS_WARNING("-Wunused-member-function")
-DOCTEST_CLANG_SUPPRESS_WARNING("-Wnonportable-system-include-path")
+DOCTEST_CLANG_SUPPRESS_WARNING("-Wnonportable-system-table-project-path")
 
 DOCTEST_GCC_SUPPRESS_WARNING_PUSH
 DOCTEST_GCC_SUPPRESS_WARNING("-Wunknown-pragmas")
@@ -2807,7 +2807,7 @@ DOCTEST_MAKE_STD_HEADERS_CLEAN_FROM_WARNINGS_ON_WALL_BEGIN
 #include <climits>
 // borland (Embarcadero) compiler requires math.h and not cmath - https://github.com/onqtam/doctest/pull/37
 #ifdef __BORLANDC__
-#include <math.h>
+#table-project <math.h>
 #endif // __BORLANDC__
 #include <new>
 #include <cstdio>
@@ -2833,9 +2833,9 @@ DOCTEST_MAKE_STD_HEADERS_CLEAN_FROM_WARNINGS_ON_WALL_BEGIN
 #include <cstdint>
 
 #ifdef DOCTEST_PLATFORM_MAC
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/sysctl.h>
+#table-project <sys/types.h>
+#table-project <unistd.h>
+#table-project <sys/sysctl.h>
 #endif // DOCTEST_PLATFORM_MAC
 
 #ifdef DOCTEST_PLATFORM_WINDOWS
@@ -2850,11 +2850,11 @@ DOCTEST_MAKE_STD_HEADERS_CLEAN_FROM_WARNINGS_ON_WALL_BEGIN
 
 // not sure what AfxWin.h is for - here I do what Catch does
 #ifdef __AFXDLL
-#include <AfxWin.h>
+#table-project <AfxWin.h>
 #else
-#include <windows.h>
+#table-project <windows.h>
 #endif
-#include <io.h>
+#table-project <io.h>
 
 #else // DOCTEST_PLATFORM_WINDOWS
 
@@ -3197,7 +3197,7 @@ typedef timer_large_integer::type ticks_t;
                               (TestCaseFailureReason::CouldHaveFailedAndDid & failure_flags) ||
                               (TestCaseFailureReason::FailedExactlyNumTimes & failure_flags);
 
-            // if any subcase has failed - the whole test case has failed
+            // if any subcase has failed - the whole tests case has failed
             if(failure_flags && !ok_to_fail)
                 numTestCasesFailed++;
         }
@@ -3624,7 +3624,7 @@ int registerReporter(const char*, int, IReporter*) { return 0; }
 #endif // DOCTEST_CONFIG_COLORS_NONE
 
 namespace doctest_detail_test_suite_ns {
-// holds the current test suite
+// holds the current tests suite
 doctest::detail::TestSuite& getCurrentTestSuite() {
     static doctest::detail::TestSuite data{};
     return data;
@@ -3788,7 +3788,7 @@ namespace detail {
             && g_cs->shouldLogCurrentException) {
                 DOCTEST_ITERATE_THROUGH_REPORTERS(
                         test_case_exception, {"exception thrown in subcase - will translate later "
-                                              "when the whole test case has been exited (cannot "
+                                              "when the whole tests case has been exited (cannot "
                                               "translate while there is an active exception)",
                                               false});
                 g_cs->shouldLogCurrentException = false;
@@ -3867,7 +3867,7 @@ namespace detail {
 
     TestCase& TestCase::operator*(const char* in) {
         m_name = in;
-        // make a new name with an appended type for templated test case
+        // make a new name with an appended type for templated tests case
         if(m_template_id != -1) {
             m_full_name = String(m_name) + m_type;
             // redirect the name to point to the newly constructed full name
@@ -3877,7 +3877,7 @@ namespace detail {
     }
 
     bool TestCase::operator<(const TestCase& other) const {
-        // this will be used only to differentiate between test cases - not relevant for sorting
+        // this will be used only to differentiate between tests cases - not relevant for sorting
         if(m_line != other.m_line)
             return m_line < other.m_line;
         const int name_cmp = strcmp(m_name, other.m_name);
@@ -4048,7 +4048,7 @@ namespace detail {
         return 0;
     }
 
-    // sets the current test suite
+    // sets the current tests suite
     int setTestSuite(const TestSuite& ts) {
         doctest_detail_test_suite_ns::getCurrentTestSuite() = ts;
         return 0;
@@ -4270,7 +4270,7 @@ namespace {
                 }
             });
 
-            // The following settings are taken from google test, and more
+            // The following settings are taken from google tests, and more
             // specifically from UnitTest::Run() inside of gtest.cc
 
             // the user does not want to see pop-up dialogs about crashes
@@ -4595,7 +4595,7 @@ namespace {
     // clang-format off
 
 // =================================================================================================
-// The following code has been taken verbatim from Catch2/include/internal/catch_xmlwriter.h/cpp
+// The following code has been taken verbatim from Catch2/table-project/internal/catch_xmlwriter.h/cpp
 // This is done so cherry-picking bug fixes is trivial - even the style/formatting is untouched.
 // =================================================================================================
 
@@ -4687,7 +4687,7 @@ namespace {
     };
 
 // =================================================================================================
-// The following code has been taken verbatim from Catch2/include/internal/catch_xmlwriter.h/cpp
+// The following code has been taken verbatim from Catch2/table-project/internal/catch_xmlwriter.h/cpp
 // This is done so cherry-picking bug fixes is trivial - even the style/formatting is untouched.
 // =================================================================================================
 
@@ -5004,14 +5004,14 @@ namespace {
 
         void test_case_start_impl(const TestCaseData& in) {
             bool open_ts_tag = false;
-            if(tc != nullptr) { // we have already opened a test suite
+            if(tc != nullptr) { // we have already opened a tests suite
                 if(std::strcmp(tc->m_test_suite, in.m_test_suite) != 0) {
                     xml.endElement();
                     open_ts_tag = true;
                 }
             }
             else {
-                open_ts_tag = true; // first test case ==> first test suite
+                open_ts_tag = true; // first tests case ==> first tests suite
             }
 
             if(open_ts_tag) {
@@ -5095,7 +5095,7 @@ namespace {
         }
 
         void test_run_end(const TestRunStats& p) override {
-            if(tc) // the TestSuite tag - only if there has been at least 1 test case
+            if(tc) // the TestSuite tag - only if there has been at least 1 tests case
                 xml.endElement();
 
             xml.scopedElement("OverallResultsAsserts")
@@ -5639,27 +5639,27 @@ namespace {
               << Whitespace(sizePrefixDisplay*1) << "prints the version\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "c,   --" DOCTEST_OPTIONS_PREFIX_DISPLAY "count                         "
               << Whitespace(sizePrefixDisplay*1) << "prints the number of matching tests\n";
-            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "ltc, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "list-test-cases               "
+            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "ltc, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "list-tests-cases               "
               << Whitespace(sizePrefixDisplay*1) << "lists all matching tests by name\n";
-            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "lts, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "list-test-suites              "
-              << Whitespace(sizePrefixDisplay*1) << "lists all matching test suites\n";
+            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "lts, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "list-tests-suites              "
+              << Whitespace(sizePrefixDisplay*1) << "lists all matching tests suites\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "lr,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "list-reporters                "
               << Whitespace(sizePrefixDisplay*1) << "lists all registered reporters\n\n";
             // ================================================================================== << 79
             s << Color::Cyan << "[main] " << Color::None;
             s << "The available <int>/<string> options/filters are:\n\n";
-            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "tc,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "test-case=<filters>           "
+            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "tc,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "tests-case=<filters>           "
               << Whitespace(sizePrefixDisplay*1) << "filters     tests by their name\n";
-            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "tce, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "test-case-exclude=<filters>   "
+            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "tce, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "tests-case-exclude=<filters>   "
               << Whitespace(sizePrefixDisplay*1) << "filters OUT tests by their name\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "sf,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "source-file=<filters>         "
               << Whitespace(sizePrefixDisplay*1) << "filters     tests by their file\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "sfe, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "source-file-exclude=<filters> "
               << Whitespace(sizePrefixDisplay*1) << "filters OUT tests by their file\n";
-            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "ts,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "test-suite=<filters>          "
-              << Whitespace(sizePrefixDisplay*1) << "filters     tests by their test suite\n";
-            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "tse, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "test-suite-exclude=<filters>  "
-              << Whitespace(sizePrefixDisplay*1) << "filters OUT tests by their test suite\n";
+            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "ts,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "tests-suite=<filters>          "
+              << Whitespace(sizePrefixDisplay*1) << "filters     tests by their tests suite\n";
+            s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "tse, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "tests-suite-exclude=<filters>  "
+              << Whitespace(sizePrefixDisplay*1) << "filters OUT tests by their tests suite\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "sc,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "subcase=<filters>             "
               << Whitespace(sizePrefixDisplay*1) << "filters     subcases by their name\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "sce, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "subcase-exclude=<filters>     "
@@ -5674,10 +5674,10 @@ namespace {
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "rs,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "rand-seed=<int>               "
               << Whitespace(sizePrefixDisplay*1) << "seed for random ordering\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "f,   --" DOCTEST_OPTIONS_PREFIX_DISPLAY "first=<int>                   "
-              << Whitespace(sizePrefixDisplay*1) << "the first test passing the filters to\n";
+              << Whitespace(sizePrefixDisplay*1) << "the first tests passing the filters to\n";
             s << Whitespace(sizePrefixDisplay*3) << "                                       execute - for range-based execution\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "l,   --" DOCTEST_OPTIONS_PREFIX_DISPLAY "last=<int>                    "
-              << Whitespace(sizePrefixDisplay*1) << "the last test passing the filters to\n";
+              << Whitespace(sizePrefixDisplay*1) << "the last tests passing the filters to\n";
             s << Whitespace(sizePrefixDisplay*3) << "                                       execute - for range-based execution\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "aa,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "abort-after=<int>             "
               << Whitespace(sizePrefixDisplay*1) << "stop after <int> failed assertions\n";
@@ -5686,13 +5686,13 @@ namespace {
             s << Color::Cyan << "\n[main] " << Color::None;
             s << "Bool options - can be used like flags and true is assumed. Available:\n\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "s,   --" DOCTEST_OPTIONS_PREFIX_DISPLAY "success=<bool>                "
-              << Whitespace(sizePrefixDisplay*1) << "include successful assertions in output\n";
+              << Whitespace(sizePrefixDisplay*1) << "table-project successful assertions in output\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "cs,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "case-sensitive=<bool>         "
               << Whitespace(sizePrefixDisplay*1) << "filters being treated as case sensitive\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "e,   --" DOCTEST_OPTIONS_PREFIX_DISPLAY "exit=<bool>                   "
               << Whitespace(sizePrefixDisplay*1) << "exits after the tests finish\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "d,   --" DOCTEST_OPTIONS_PREFIX_DISPLAY "duration=<bool>               "
-              << Whitespace(sizePrefixDisplay*1) << "prints the time duration of each test\n";
+              << Whitespace(sizePrefixDisplay*1) << "prints the time duration of each tests\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "nt,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "no-throw=<bool>               "
               << Whitespace(sizePrefixDisplay*1) << "skips exceptions-related assert checks\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "ne,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "no-exitcode=<bool>            "
@@ -5708,7 +5708,7 @@ namespace {
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "nb,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "no-breaks=<bool>              "
               << Whitespace(sizePrefixDisplay*1) << "disables breakpoints in debuggers\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "ns,  --" DOCTEST_OPTIONS_PREFIX_DISPLAY "no-skip=<bool>                "
-              << Whitespace(sizePrefixDisplay*1) << "don't skip test cases marked as skip\n";
+              << Whitespace(sizePrefixDisplay*1) << "don't skip tests cases marked as skip\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "gfl, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "gnu-file-line=<bool>          "
               << Whitespace(sizePrefixDisplay*1) << ":n: vs (n): for line numbers in output\n";
             s << " -" DOCTEST_OPTIONS_PREFIX_DISPLAY "npf, --" DOCTEST_OPTIONS_PREFIX_DISPLAY "no-path-filenames=<bool>      "
@@ -5740,14 +5740,14 @@ namespace {
             separator_to_stream();
             if(opt.count || opt.list_test_cases) {
                 s << Color::Cyan << "[main] " << Color::None
-                  << "unskipped test cases passing the current filters: "
+                  << "unskipped tests cases passing the current filters: "
                   << g_cs->numTestCasesPassingFilters << "\n";
             } else if(opt.list_test_suites) {
                 s << Color::Cyan << "[main] " << Color::None
-                  << "unskipped test cases passing the current filters: "
+                  << "unskipped tests cases passing the current filters: "
                   << g_cs->numTestCasesPassingFilters << "\n";
                 s << Color::Cyan << "[main] " << Color::None
-                  << "test suites with unskipped test cases passing the current filters: "
+                  << "tests suites with unskipped tests cases passing the current filters: "
                   << g_cs->numTestSuitesPassingFilters << "\n";
             }
         }
@@ -5766,7 +5766,7 @@ namespace {
             } else if(opt.count || opt.list_test_cases) {
                 if(opt.list_test_cases) {
                     s << Color::Cyan << "[main] " << Color::None
-                      << "listing all test case names\n";
+                      << "listing all tests case names\n";
                     separator_to_stream();
                 }
 
@@ -5776,11 +5776,11 @@ namespace {
                 separator_to_stream();
 
                 s << Color::Cyan << "[main] " << Color::None
-                  << "unskipped test cases passing the current filters: "
+                  << "unskipped tests cases passing the current filters: "
                   << g_cs->numTestCasesPassingFilters << "\n";
 
             } else if(opt.list_test_suites) {
-                s << Color::Cyan << "[main] " << Color::None << "listing all test suites\n";
+                s << Color::Cyan << "[main] " << Color::None << "listing all tests suites\n";
                 separator_to_stream();
 
                 for(unsigned i = 0; i < in.num_data; ++i)
@@ -5789,10 +5789,10 @@ namespace {
                 separator_to_stream();
 
                 s << Color::Cyan << "[main] " << Color::None
-                  << "unskipped test cases passing the current filters: "
+                  << "unskipped tests cases passing the current filters: "
                   << g_cs->numTestCasesPassingFilters << "\n";
                 s << Color::Cyan << "[main] " << Color::None
-                  << "test suites with unskipped test cases passing the current filters: "
+                  << "tests suites with unskipped tests cases passing the current filters: "
                   << g_cs->numTestSuitesPassingFilters << "\n";
             }
         }
@@ -5807,7 +5807,7 @@ namespace {
             auto passwidth = int(std::ceil(log10((std::max(p.numTestCasesPassingFilters - p.numTestCasesFailed, static_cast<unsigned>(p.numAsserts - p.numAssertsFailed))) + 1)));
             auto failwidth = int(std::ceil(log10((std::max(p.numTestCasesFailed, static_cast<unsigned>(p.numAssertsFailed))) + 1)));
             const bool anythingFailed = p.numTestCasesFailed > 0 || p.numAssertsFailed > 0;
-            s << Color::Cyan << "[main] " << Color::None << "test cases: " << std::setw(totwidth)
+            s << Color::Cyan << "[main] " << Color::None << "tests cases: " << std::setw(totwidth)
               << p.numTestCasesPassingFilters << " | "
               << ((p.numTestCasesPassingFilters == 0 || anythingFailed) ? Color::None :
                                                                           Color::Green)
@@ -5846,7 +5846,7 @@ namespace {
             if(tc->m_no_output)
                 return;
 
-            // log the preamble of the test case only if there is something
+            // log the preamble of the tests case only if there is something
             // else to print - something other than that an assert has failed
             if(opt.duration ||
                (st.failure_flags && st.failure_flags != TestCaseFailureReason::AssertFailure))
@@ -5888,7 +5888,7 @@ namespace {
             file_line_to_stream(tc->m_file.c_str(), tc->m_line, " ");
             successOrFailColoredStringToStream(false, e.is_crash ? assertType::is_require :
                                                                    assertType::is_check);
-            s << Color::Red << (e.is_crash ? "test case CRASHED: " : "test case THREW exception: ")
+            s << Color::Red << (e.is_crash ? "tests case CRASHED: " : "tests case THREW exception: ")
               << Color::Cyan << e.error_string << "\n";
 
             int num_stringified_contexts = get_num_stringified_contexts();
@@ -6134,13 +6134,13 @@ void Context::parseArgs(int argc, const char* const* argv, bool withDefaults) {
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "sf=",                 p->filters[0]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "source-file-exclude=",p->filters[1]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "sfe=",                p->filters[1]);
-    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "test-suite=",         p->filters[2]);
+    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "tests-suite=",         p->filters[2]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "ts=",                 p->filters[2]);
-    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "test-suite-exclude=", p->filters[3]);
+    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "tests-suite-exclude=", p->filters[3]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "tse=",                p->filters[3]);
-    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "test-case=",          p->filters[4]);
+    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "tests-case=",          p->filters[4]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "tc=",                 p->filters[4]);
-    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "test-case-exclude=",  p->filters[5]);
+    parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "tests-case-exclude=",  p->filters[5]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "tce=",                p->filters[5]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "subcase=",            p->filters[6]);
     parseCommaSepArgs(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "sc=",                 p->filters[6]);
@@ -6231,12 +6231,12 @@ void Context::parseArgs(int argc, const char* const* argv, bool withDefaults) {
         p->count = true;
         p->exit  = true;
     }
-    if(parseFlag(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "list-test-cases") ||
+    if(parseFlag(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "list-tests-cases") ||
        parseFlag(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "ltc")) {
         p->list_test_cases = true;
         p->exit            = true;
     }
-    if(parseFlag(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "list-test-suites") ||
+    if(parseFlag(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "list-tests-suites") ||
        parseFlag(argc, argv, DOCTEST_CONFIG_OPTIONS_PREFIX "lts")) {
         p->list_test_suites = true;
         p->exit             = true;
@@ -6277,7 +6277,7 @@ void Context::setAsDefaultForAssertsOutOfTestCases() { g_cs = p; }
 
 void Context::setAssertHandler(detail::assert_handler ah) { p->ah = ah; }
 
-// the main function that does all the filtering and test running
+// the main function that does all the filtering and tests running
 int Context::run() {
     using namespace detail;
 
@@ -6379,7 +6379,7 @@ int Context::run() {
             }
         } else if(p->order_by.compare("none", true) == 0) {
             // means no sorting - beneficial for death tests which call into the executable
-            // with a specific test case in mind - we don't want to slow down the startup times
+            // with a specific tests case in mind - we don't want to slow down the startup times
         }
     }
 
@@ -6415,7 +6415,7 @@ int Context::run() {
         if(!skip_me)
             p->numTestCasesPassingFilters++;
 
-        // skip the test if it is not in the execution range
+        // skip the tests if it is not in the execution range
         if((p->last < p->numTestCasesPassingFilters && p->first <= p->last) ||
            (p->first > p->numTestCasesPassingFilters))
             skip_me = true;
@@ -6426,17 +6426,17 @@ int Context::run() {
             continue;
         }
 
-        // do not execute the test if we are to only count the number of filter passing tests
+        // do not execute the tests if we are to only count the number of filter passing tests
         if(p->count)
             continue;
 
-        // print the name of the test and don't execute it
+        // print the name of the tests and don't execute it
         if(p->list_test_cases) {
             queryResults.push_back(&tc);
             continue;
         }
 
-        // print the name of the test suite if not done already and don't execute it
+        // print the name of the tests suite if not done already and don't execute it
         if(p->list_test_suites) {
             if((testSuitesPassingFilt.count(tc.m_test_suite) == 0) && tc.m_test_suite[0] != '\0') {
                 queryResults.push_back(&tc);
@@ -6446,7 +6446,7 @@ int Context::run() {
             continue;
         }
 
-        // execute the test if it passes all the filtering
+        // execute the tests if it passes all the filtering
         {
             p->currentTest = &tc;
 
@@ -6482,7 +6482,7 @@ int Context::run() {
 // MSVC 2015 diagnoses fatalConditionHandler as unused (because reset() is a static method)
 DOCTEST_MSVC_SUPPRESS_WARNING_WITH_PUSH(4101) // unreferenced local variable
                     FatalConditionHandler fatalConditionHandler; // Handle signals
-                    // execute the test
+                    // execute the tests
                     tc.m_test();
                     fatalConditionHandler.reset();
 DOCTEST_MSVC_SUPPRESS_WARNING_POP

@@ -1,5 +1,4 @@
-#ifndef TABLE_TYPE_H
-#define TABLE_TYPE_H
+#pragma once
 
 #include <ostream>
 
@@ -14,6 +13,6 @@ public:
 	
 //	std::ostream & operator<<(std::ostream & os) const;
 	friend std::ostream & operator<<(std::ostream & os, const Type & type);
+	
+	static Type * createCopy(const Type & t);
 };
-
-#endif

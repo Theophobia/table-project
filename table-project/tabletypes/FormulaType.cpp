@@ -1,4 +1,4 @@
-#include "FormulaType.h"
+#include <table-project/tabletypes/FormulaType.h>
 
 FormulaType::FormulaType(const char * str) {
 	this->formula = str;

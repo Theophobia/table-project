@@ -1,8 +1,6 @@
 #pragma once
 
-#include <deque>
-#include "base/Type.h"
-#include "../table/Table.h"
+#include <table-project/tabletypes/Type.h>
 
 class Table;
 

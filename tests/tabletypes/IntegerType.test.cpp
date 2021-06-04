@@ -1,7 +1,6 @@
-#include "main/doctest.h"
-#include "main/TestUtil.h"
+#include <tests/doctest.h>
 
-#include "../src/tabletypes/IntegerType.h"
+#include <table-project/tabletypes/IntegerType.h>
 
 TEST_CASE("IntegerType_tryParse_NormalInteger_NoThrow") {
 	// Arrange
