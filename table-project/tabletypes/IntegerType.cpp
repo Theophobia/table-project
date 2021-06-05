@@ -80,6 +80,11 @@ std::string IntegerType::toCSV() const {
 	return this->toString();
 }
 
+const std::string & IntegerType::getClass() const {
+	static const std::string className = "IntegerType";
+	return className;
+}
+
 bool IntegerType::operator==(const Type & t) const {
 	const IntegerType * casted = dynamic_cast<const IntegerType *>(&t);
 	

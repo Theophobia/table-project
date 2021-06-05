@@ -9,6 +9,7 @@ public:
 	virtual void tryParse(const std::string & str) = 0;
 	virtual std::string toString() const = 0;
 	virtual std::string toCSV() const = 0;
+	virtual const std::string & getClass() const = 0;
 	
 	virtual bool operator==(const Type & t) const = 0;
 	
@@ -16,4 +17,5 @@ public:
 	friend std::ostream & operator<<(std::ostream & os, const Type & type);
 	
 	static Type * createCopy(const Type & t);
+	static Type * fromString(const char * str);
 };

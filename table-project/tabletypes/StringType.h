@@ -17,6 +17,7 @@ public:
 	void tryParse(const std::string & str) override;
 	std::string toString() const override;
 	std::string toCSV() const override;
+	const std::string & getClass() const override;
 	
 	bool operator==(const Type & t) const override;
 };

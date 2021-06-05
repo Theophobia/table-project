@@ -189,6 +189,9 @@ std::shared_ptr<Type> operator^(const std::shared_ptr<Type> & aPtr, const std::s
 	}
 	
 	if (!atd.hasDouble && !btd.hasDouble) {
+		if (btd.integerPart < 0) {
+			return std::make_shared<DoubleType>(std::pow(atd.integerPart, btd.integerPart));
+		}
 		return std::make_shared<IntegerType>(std::pow(atd.integerPart, btd.integerPart));
 	}
 	

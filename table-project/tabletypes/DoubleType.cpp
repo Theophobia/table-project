@@ -85,13 +85,37 @@ void DoubleType::tryParse(const std::string & str) {
 std::string DoubleType::toString() const {
 //	return std::to_string(number); // This leaves trailing zeros
 
-	std::ostringstream oss;
-	oss << number;
-	return oss.str();
+//	std::ostringstream oss;
+//	oss << number;
+//	return oss.str();
+	
+	// Source: https://stackoverflow.com/questions/15165502/double-to-string-without-scientific-notation-or-trailing-zeros-efficiently
+	size_t len = std::snprintf(0, 0, "%.10Lf", number);
+	std::string s(len + 1, 0);
+	
+	std::snprintf(&s[0], len + 1, "%.10Lf", number);
+	
+	// remove null terminator
+	s.pop_back();
+	
+	// remove trailing zeros
+	s.erase(s.find_last_not_of('0') + 1, std::string::npos);
+	
+	// remove trailing point
+	if (s.back() == '.') {
+		s.pop_back();
+	}
+	
+	return s;
 }
 
 std::string DoubleType::toCSV() const {
 	return this->toString();
+}
+
+const std::string & DoubleType::getClass() const {
+	static const std::string className = "DoubleType";
+	return className;
 }
 
 bool DoubleType::operator==(const Type & t) const {

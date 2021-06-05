@@ -48,6 +48,11 @@ std::string StringType::toCSV() const {
 	return '"' + this->toString() + '"';
 }
 
+const std::string & StringType::getClass() const {
+	static const std::string className = "StringType";
+	return className;
+}
+
 bool StringType::operator==(const Type & t) const {
 	const StringType * casted = dynamic_cast<const StringType *>(&t);
 	
