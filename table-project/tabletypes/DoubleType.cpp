@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include <table-project/tabletypes/DoubleType.h>
 #include <table-project/exception/ParseError.h>
 
@@ -81,7 +83,15 @@ void DoubleType::tryParse(const std::string & str) {
 }
 
 std::string DoubleType::toString() const {
-	return std::to_string(number);
+//	return std::to_string(number); // This leaves trailing zeros
+
+	std::ostringstream oss;
+	oss << number;
+	return oss.str();
+}
+
+std::string DoubleType::toCSV() const {
+	return this->toString();
 }
 
 bool DoubleType::operator==(const Type & t) const {

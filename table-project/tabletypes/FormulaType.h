@@ -10,7 +10,7 @@ protected:
 	std::string formula;
 	Type * obj = nullptr;
 	
-	void calculate(const Table & table);
+	void calculate(const Table & table, std::size_t thisRow, std::size_t thisCol);
 	
 public:
 	FormulaType() = default;
@@ -27,6 +27,10 @@ public:
 	
 	void tryParse(const std::string & str) override;
 	std::string toString() const override;
+	std::string toCSV() const override;
+	
+	std::string getCalculatedValue(const Table & table, std::size_t thisRow, std::size_t thisCol) const;
+	std::string getCalculatedValue(const Table & table, std::size_t thisRow, std::size_t thisCol);
 	
 	bool operator==(const Type & t) const override;
 };

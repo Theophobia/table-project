@@ -8,6 +8,7 @@ public:
 	virtual ~Type();
 	virtual void tryParse(const std::string & str) = 0;
 	virtual std::string toString() const = 0;
+	virtual std::string toCSV() const = 0;
 	
 	virtual bool operator==(const Type & t) const = 0;
 	

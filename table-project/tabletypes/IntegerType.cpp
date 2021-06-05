@@ -70,6 +70,10 @@ std::string IntegerType::toString() const {
 	return std::to_string(number);
 }
 
+std::string IntegerType::toCSV() const {
+	return this->toString();
+}
+
 bool IntegerType::operator==(const Type & t) const {
 	const IntegerType * casted = dynamic_cast<const IntegerType *>(&t);
 	
