@@ -18,6 +18,9 @@ class Table {
 	
 	std::vector<std::vector<Type *>> table;
 	
+	void trunc();
+	void readFromFile(const char * filePath);
+	
 	static char indexToColumnLetter(std::size_t i);
 public:
 	Table() = default;
@@ -37,4 +40,5 @@ public:
 	void put(int i, int j, const Type & t);
 	
 	friend std::ostream & operator<<(std::ostream & os, const Table & table);
+	friend std::istream & operator>>(std::istream & is, Table & table);
 };

@@ -3,6 +3,14 @@
 #include <table-project/table/Table.h>
 #include <iomanip>
 
+void Table::trunc() {
+	this->table.clear();
+}
+
+void Table::readFromFile(const char * filePath) {
+
+}
+
 char Table::indexToColumnLetter(std::size_t i) {
 	static char digits[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	return digits[i];
@@ -83,25 +91,39 @@ void Table::put(int i, int j, const Type & t) {
 	specifiedElement = copied;
 }
 
-std::ostream & operator<<(std::ostream & os, const Table & table) {
+std::ostream & operator<<(std::ostream & os, const Table & t) {
 	
 	std::size_t columns = 0;
-	std::size_t rows = table.table.size();
+	std::size_t rows = t.table.size();
 	std::size_t maxElemLen = 0;
-	
-	for (const auto & row : table.table) {
+
+	for (const auto & row : t.table) {
 		if (row.size() > columns) {
 			columns = row.size();
 		}
-		
-		for (const auto & elem : row) {
-			if (elem == nullptr) {
-				continue;
+	}
+
+	std::size_t * colMaxElemLen = new std::size_t[columns](); // zeroes elements
+//	std::size_t colMaxElemLen[columns];
+//	for (std::size_t i = 0; i < columns; i++) {
+//		colMaxElemLen[i] = 0;
+//	}
+	
+	for (std::size_t j = 0; j < columns; j++) {
+		for (std::size_t i = 0; i < rows; i++) {
+			try {
+				Type * elem = t.table.at(i).at(j);
+				if (elem == nullptr) {
+					continue;
+				}
+				
+				std::size_t elemLen = elem->toString().size();
+				if (elemLen > colMaxElemLen[j]) {
+					colMaxElemLen[j] = elemLen;
+				}
 			}
+			catch (std::exception &) {
 			
-			auto elemLen = elem->toString().size();
-			if (elemLen > maxElemLen) {
-				maxElemLen = elemLen;
 			}
 		}
 	}
@@ -113,6 +135,7 @@ std::ostream & operator<<(std::ostream & os, const Table & table) {
 	
 	const std::size_t ELEMENTS_IN_ALPHABET = 26; // TODO extract this somewhere
 	if (columns > ELEMENTS_IN_ALPHABET) {
+		delete[] colMaxElemLen;
 		throw std::runtime_error("Table has more than 26 columns");
 	}
 //	const std::size_t columnsStrLen = 1 + (rows - 1) / ELEMENTS_IN_ALPHABET;
@@ -120,19 +143,22 @@ std::ostream & operator<<(std::ostream & os, const Table & table) {
 //		maxElemLen = columnsStrLen;
 //	}
 	
-	os << "\n " << std::setw(rowsStrLen) << std::setfill(' ') << ' ' << " |"; // TODO check this
+	// Print column header
+	// First is the empty part where column and row headers meet
+	os << "\n " << std::setw(rowsStrLen) << std::setfill(' ') << ' ' << " |";
 	for (std::size_t i = 0; i < columns; i++) {
-		os << ' ' << std::setw(maxElemLen) << std::setfill(' ') << Table::indexToColumnLetter(i) << " |";
+		// This is the column letter part
+		os << ' ' << std::setw(colMaxElemLen[i]) << std::setfill(' ') << Table::indexToColumnLetter(i) << " |";
 	}
 	
 	for (std::size_t i = 0; i < rows; i++) {
-		auto row = table.table[i];
+		const auto & row = t.table[i];
 		os << "\n " << std::setw(rowsStrLen) << std::setfill(' ') << std::to_string(i + 1) << " |";
+		
 		for (std::size_t j = 0; j < columns; j++) {
 			std::string elemToString = " ";
 			try {
-				table.table.at(i).at(j);
-				Type * elem = table.table[i][j];
+				Type * elem = t.table.at(i).at(j);
 				if (elem != nullptr) {
 					elemToString = elem->toString();
 				}
@@ -141,11 +167,11 @@ std::ostream & operator<<(std::ostream & os, const Table & table) {
 			
 			}
 			
-			os << ' ' << std::setw(maxElemLen) << std::setfill(' ') << elemToString << " |";
+			os << ' ' << std::setw(colMaxElemLen[j]) << std::setfill(' ') << elemToString << " |";
 		}
 	}
 	os << std::endl;
 	
-	
+	delete[] colMaxElemLen;
 	return os;
 }
