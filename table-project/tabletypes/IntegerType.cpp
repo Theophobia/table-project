@@ -1,6 +1,8 @@
 #include <table-project/tabletypes/IntegerType.h>
 #include <table-project/exception/ParseError.h>
 
+#include <memory>
+
 IntegerType::IntegerType(std::int64_t number) {
 	this->number = number;
 }
@@ -23,6 +25,10 @@ IntegerType & IntegerType::operator=(IntegerType && other) noexcept {
 	
 	other.number = 0;
 	return *this;
+}
+
+IntegerType::operator std::shared_ptr<IntegerType>() const {
+	return std::make_shared<IntegerType>(*this);
 }
 
 std::int64_t IntegerType::getNumber() const {

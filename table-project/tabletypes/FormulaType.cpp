@@ -75,63 +75,6 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 		}
 	}
 	
-//	std::string phase1 = oss.str();
-//	std::ostringstream phase1Out;
-//
-//	for (std::size_t i = 0; i < phase1.size(); i++) {
-//		if (phase1[i] == '^') {
-//			if (i == 0) {
-//				obj = new StringType("#ERROR");
-//				return;
-//			}
-//
-//			std::size_t pow = 1;
-//			std::size_t leftNumber = 0;
-//			for (std::size_t j = i; j > 0; j--) {
-//				if (std::isdigit(phase1[j - 1])) {
-//					leftNumber = pow * (phase1[j - 1] - '0') + leftNumber;
-//					pow *= 10;
-//				}
-//				else {
-//					break;
-//				}
-//			}
-//
-//			// Check if there were no digits
-//			// For example, when 2 operations are next to each other
-//			if (pow == 1) {
-//				obj = new StringType("#ERROR");
-//				return;
-//			}
-//
-//			bool hasFoundDigits = false;
-//			std::size_t rightNumber = 0;
-//			for (std::size_t j = i + 1; j < phase1.size(); j++) {
-//				if (std::isdigit(phase1[j])) {
-//					rightNumber = 10 * rightNumber + (phase1[j] - '0');
-//					hasFoundDigits = true;
-//				}
-//				else {
-//					break;
-//				}
-//			}
-//
-//			// Check if there were no digits found
-//			// For example, when 2 operations are next to each other
-//			if (!hasFoundDigits) {
-//				obj = new StringType("#ERROR");
-//				return;
-//			}
-//
-//			long double opResult =
-//			phase1Out << '+' <<
-//		}
-//		else {
-//			phase1Out << phase1[i];
-//		}
-//	}
-//	std::string s(phase1Out.str());
-	
 	obj = new StringType(oss.str());
 }
 

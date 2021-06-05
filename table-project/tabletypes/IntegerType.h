@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "Type.h"
 
 /**
@@ -23,6 +24,8 @@ public:
 	
 	IntegerType(IntegerType && other) noexcept;
 	IntegerType & operator=(IntegerType && other) noexcept;
+	
+	operator std::shared_ptr<IntegerType>() const;
 	
 	std::int64_t getNumber() const;
 	void setNumber(std::int64_t number);

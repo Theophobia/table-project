@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Type.h"
+#include <table-project/tabletypes/Type.h>
+#include <table-project/tabletypes/IntegerType.h>
+#include <table-project/tabletypes/StringType.h>
 
 class DoubleType : public Type {
 
@@ -19,4 +21,5 @@ public:
 	std::string toCSV() const override;
 	
 	bool operator==(const Type & t) const override;
+	
 };

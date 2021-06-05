@@ -6,3 +6,4 @@
 #include <tests/tabletypes/DoubleType.test.cpp>
 #include <tests/tabletypes/StringType.test.cpp>
 #include <tests/table/Table.test.cpp>
+#include <tests/math/Operators.test.cpp>

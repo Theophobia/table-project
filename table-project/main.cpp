@@ -3,9 +3,10 @@
 
 #include <table-project/table/Table.h>
 #include <table-project/tabletypes/IntegerType.h>
-#include <table-project/tabletypes/DoubleType.h>
+#include <table-project/tabletypes/DoubleType.h>s
 #include <table-project/tabletypes/StringType.h>
 #include <table-project/tabletypes/FormulaType.h>
+#include <table-project/math/Operators.h>
 
 void createPrintAndSaveTable() {
 	Table t;
@@ -25,8 +26,7 @@ void createPrintAndSaveTable() {
 	
 }
 
-int main() {
-//	createPrintAndSaveTable();
+void asd() {
 	Table t;
 	t.put(0, 0, FormulaType("B1+D1^E1"));
 	t.put(0, 1, FormulaType("C1+D1+10"));
@@ -34,10 +34,13 @@ int main() {
 	t.put(0, 3, IntegerType(456));
 	t.put(0, 4, IntegerType(2));
 	std::cout << t;
-	
-	std::ofstream fileOut("tmp.csv", std::ios::out | std::ios::trunc);
-	fileOut << t.toCSV() << std::endl;
-	fileOut.close();
-	
+
+//	std::ofstream fileOut("tmp.csv", std::ios::out | std::ios::trunc);
+//	fileOut << t.toCSV() << std::endl;
+//	fileOut.close();
+}
+
+int main() {
+	asd();
 	return 0;
 }
