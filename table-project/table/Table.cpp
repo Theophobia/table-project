@@ -3,6 +3,8 @@
 
 #include <table-project/table/Table.h>
 #include <table-project/tabletypes/FormulaType.h>
+#include <memory>
+#include <table-project/tabletypes/StringType.h>
 
 void Table::trunc() {
 	this->table.clear();
@@ -79,7 +81,40 @@ Table::Table(const char * filePath) {
 		throw std::invalid_argument("Could not open file");
 	}
 	
+	std::size_t row = 0;
+	std::size_t col = 0;
 	
+	std::string buffer;
+	char c;
+	while (fileIn.get(c)) {
+		if (c == ',' || c == '\n') {
+			try {
+				std::shared_ptr<Type> typePtr(Type::fromString(buffer.c_str()));
+				this->put(row, col, *typePtr);
+			}
+			catch (std::exception & e) {
+				std::string s;
+				s += "Could not read table from file: ";
+				s += "(rowIndex=" + std::to_string(row) + ", ";
+				s += "colIndex=" + std::to_string(col) + "): ";
+				s += e.what();
+				throw std::runtime_error(s);
+			}
+			
+			if (c == ',') {
+				col++;
+				buffer.clear();
+			}
+			else { // c == '\n'
+				col = 0;
+				row++;
+				buffer.clear();
+			}
+		}
+		else {
+			buffer += c;
+		}
+	}
 }
 
 Table::~Table() {

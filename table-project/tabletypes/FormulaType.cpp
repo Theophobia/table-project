@@ -260,7 +260,11 @@ FormulaType & FormulaType::operator=(FormulaType && other) noexcept {
 }
 
 void FormulaType::tryParse(const std::string & str) {
-
+	if (str[0] != '=') {
+		throw std::invalid_argument("Formula must start with '='");
+	}
+	
+	this->formula = str.substr(1);
 }
 
 std::string FormulaType::toString() const {
