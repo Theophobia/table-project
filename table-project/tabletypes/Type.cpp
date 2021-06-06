@@ -57,5 +57,5 @@ std::shared_ptr<Type> Type::fromString(const std::string & s) {
 	}
 	catch (std::exception &) {}
 	
-	throw std::invalid_argument("String could not be parsed as anything, unexpected error");
+	throw std::invalid_argument("String could not be parsed as anything");
 }

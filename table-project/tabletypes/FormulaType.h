@@ -7,6 +7,7 @@
 class Table;
 
 class FormulaType : public Type {
+	friend class Table;
 	static const int FORMULA_DEFAULT_DEPTH = 5;
 
 protected:

@@ -44,7 +44,7 @@ std::deque<std::string> FormulaType::tokeniseFormula(const std::string & s) {
 				}
 				else {
 					throw std::invalid_argument(
-							"Formula contains error, unexpected character at position " + std::to_string(i));
+						"Formula contains error, unexpected character at position " + std::to_string(i));
 				}
 			}
 
@@ -76,8 +76,6 @@ std::deque<std::string> FormulaType::tokeniseFormula(const std::string & s) {
 }
 
 void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_t thisCol, int depth) {
-	//	delete obj;
-	//	obj = nullptr;
 
 	std::ostringstream oss;
 	for (std::size_t i = 0; i < formula.size(); i++) {
@@ -92,12 +90,12 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 			oss << formula[i];
 		}
 
-			// Check for constants
+		// Check for constants
 		else if (std::isdigit(formula[i])) {
 			oss << formula[i];
 		}
 
-			// Check for cell references
+		// Check for cell references
 		else if (std::isalpha(formula[i])) {
 			if (i == formula.size() - 1) {
 				// Incomplete cell reference
@@ -151,8 +149,9 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 			else if (maybeFormulaType) {
 				oss << maybeFormulaType->getCalculatedValue(table, rowNumber - 1, columnNumber - 1, depth - 1);
 			}
-				// IntegerType and DoubleType are
-				// trivially printable as integer/double
+
+			// IntegerType and DoubleType are
+			// trivially printable as integer/double
 			else {
 				oss << table.get(rowNumber - 1, columnNumber - 1);
 			}
@@ -227,7 +226,7 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 
 	if (arr.size() != 1) {
 		std::string errMsg;
-		errMsg += "Unexpected error, could not process formula at position";
+		errMsg += "Could not process formula at position ";
 		errMsg += Table::indexToColumnLetter(thisCol);
 		errMsg += std::to_string(thisRow + 1);
 		throw std::runtime_error(errMsg);

@@ -100,8 +100,8 @@ int run() {
 					try {
 						tmpPtr = std::make_shared<Table>(args[1].c_str());
 					}
-					catch (std::exception &) {
-						std::cout << "ERROR: could not read table from file" << std::endl;
+					catch (std::exception & e) {
+						std::cout << "ERROR: could not read table from file\n\t" << e.what() << std::endl;
 						break;
 					}
 
@@ -157,19 +157,22 @@ int run() {
 						rowIndex = cellIndices.first;
 						colIndex = cellIndices.second;
 					}
-					catch (std::exception &) {
-						std::cout << "ERROR: could not parse cell location" << std::endl;
+					catch (std::exception & e) {
+						std::cout << "ERROR: could not parse cell location\n\t" << e.what() << std::endl;
 						break;
 					}
 
-					std::cout << "DEBUG: editing cell (" + std::to_string(rowIndex) + ", " + std::to_string(colIndex) + ")" << std::endl;
+					std::cout << "DEBUG: editing cell ("
+							  << std::to_string(rowIndex) + ", "
+							  << std::to_string(colIndex) + ")"
+							  << std::endl;
 
 					std::shared_ptr<Type> typePtr;
 					try {
 						typePtr = Type::fromString(args[2]);
 					}
-					catch (std::exception &) {
-						std::cout << "ERROR: could not parse passed cell data" << std::endl;
+					catch (std::exception & e) {
+						std::cout << "ERROR: could not parse passed cell data\n\t" << e.what() << std::endl;
 						break;
 					}
 
@@ -178,8 +181,8 @@ int run() {
 					try {
 						tablePtr->put(rowIndex, colIndex, *typePtr);
 					}
-					catch (std::exception &) {
-						std::cout << "ERROR: could not insert cell into table" << std::endl;
+					catch (std::exception & e) {
+						std::cout << "ERROR: could not insert cell into table\n\t" << e.what()  << std::endl;
 						break;
 					}
 				}

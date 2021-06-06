@@ -193,8 +193,7 @@ void Table::calculate() {
 		for (std::size_t colIndex = 0; colIndex < row.size(); colIndex++) {
 			std::shared_ptr<Type> & elem = row[colIndex];
 			if (elem != nullptr && elem->getClass() == FormulaType().getClass()) {
-				((FormulaType &) *elem).getCalculatedValue(*this, rowIndex, colIndex);
-
+				((FormulaType &) *elem).calculate(*this, rowIndex + 1, colIndex + 1);
 			}
 		}
 	}
@@ -214,23 +213,8 @@ std::ostream & operator<<(std::ostream & os, Table & t) {
 	// Pre-calculate formula type cells
 	// This is done to correctly calculate max size
 	t.calculate();
-//	for (std::size_t j = 0; j < columns; j++) {
-//		for (std::size_t i = 0; i < rows; i++) {
-//			try {
-//				const std::shared_ptr<Type> & elem = t.table.at(i).at(j);
-//				if (elem == nullptr) {
-//					continue;
-//				}
-//				auto * maybeFormulaType = dynamic_cast<FormulaType *>(elem.get());
-//				if (maybeFormulaType != nullptr) {
-//					maybeFormulaType->getCalculatedValue(t, i, j).size();
-//				}
-//			}
-//			catch (std::exception &) {}
-//		}
-//	}
 
-	std::size_t * colMaxElemLen = new std::size_t[columns](); // zeroes elements
+	std::vector<std::size_t> colMaxElemLen(columns);
 
 	for (std::size_t j = 0; j < columns; j++) {
 		for (std::size_t i = 0; i < rows; i++) {
@@ -264,7 +248,6 @@ std::ostream & operator<<(std::ostream & os, Table & t) {
 
 	const std::size_t ELEMENTS_IN_ALPHABET = 26;
 	if (columns > ELEMENTS_IN_ALPHABET) {
-		delete[] colMaxElemLen;
 		throw std::runtime_error("Table has more than 26 columns");
 	}
 
@@ -288,33 +271,17 @@ std::ostream & operator<<(std::ostream & os, Table & t) {
 			catch (std::exception &) {}
 
 			os << ' ' << std::setw(colMaxElemLen[j]) << std::setfill(' ');
-//			if (elem == nullptr) {
-//				os << ' ';
-//			}
-//			else {
-//				FormulaType * casted = dynamic_cast<FormulaType *>(elem.get());
-//
-//				// Check if FormulaType, else normal output
-//				if (casted == nullptr) {
-//					os << *elem;
-//				}
-//				else {
-//					os << casted->getCalculatedValue(t, i, j);
-//				}
-//			}
 			if (elem != nullptr) {
 				os << *elem;
 			}
 			else {
 				os << ' ';
 			}
-
 			os << " |";
 		}
 	}
 	os << std::endl;
 
-	delete[] colMaxElemLen;
 	return os;
 }
 
