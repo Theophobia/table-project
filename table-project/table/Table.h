@@ -10,7 +10,7 @@ class FormulaType;
 class Table {
 	friend class FormulaType;
 	
-	std::vector<std::vector<Type *>> table;
+	std::vector<std::vector<std::shared_ptr<Type>>> table;
 	
 	void trunc();
 	void readFromFile(const char * filePath);
@@ -30,26 +30,25 @@ public:
 	Table() = default;
 	Table(const char * filePath);
 	
-	~Table();
-	
+	~Table() = default;
 	Table(const Table & other);
 	Table & operator=(const Table & other);
-	
 	Table(Table && other) noexcept;
 	Table & operator=(Table && other) noexcept;
 	
-	Type & get(std::size_t i, std::size_t j);
-	const Type & get(std::size_t i, std::size_t j) const;
+	Type & get(std::size_t rowIndex, std::size_t columnIndex);
+	const Type & get(std::size_t rowIndex, std::size_t columnIndex) const;
 	
 	/**
+	 * Places a copy of the specified element at the specified position.
 	 *
-	 * @param i
-	 * @param j
-	 * @param t
+	 * @param rowIndex
+	 * @param columnIndex
+	 * @param type
 	 *
-	 * @throws std::out_of_range If "j" is greater than or equal to 26
+	 * @throws std::out_of_range If "columnIndex" is greater than or equal to 26
 	 */
-	void put(std::size_t i, std::size_t j, const Type & t);
+	void put(std::size_t rowIndex, std::size_t columnIndex, const Type & type);
 	
 	std::string toCSV() const;
 	

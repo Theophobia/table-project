@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <bits/shared_ptr.h>
 
 class Type {
 
@@ -16,6 +17,6 @@ public:
 //	std::ostream & operator<<(std::ostream & os) const;
 	friend std::ostream & operator<<(std::ostream & os, const Type & type);
 	
-	static Type * createCopy(const Type & t);
-	static Type * fromString(const char * str);
+	static std::shared_ptr<Type> createCopy(const Type & t);
+	static std::shared_ptr<Type> fromString(const char * str);
 };

@@ -1,9 +1,9 @@
 #include <fstream>
 #include <iomanip>
+#include <memory>
 
 #include <table-project/table/Table.h>
 #include <table-project/tabletypes/FormulaType.h>
-#include <memory>
 #include <table-project/tabletypes/StringType.h>
 
 void Table::trunc() {
@@ -117,14 +117,6 @@ Table::Table(const char * filePath) {
 	}
 }
 
-Table::~Table() {
-	for (const std::vector<Type *> & row : table) {
-		for (const Type * elem : row) {
-			delete elem;
-		}
-	}
-}
-
 Table::Table(const Table & other) {
 	*this = other;
 }
@@ -142,48 +134,48 @@ Table & Table::operator=(Table && other) noexcept {
 	return *this;
 }
 
-Type & Table::get(std::size_t i, std::size_t j) {
-	if (table.size() <= i) {
+Type & Table::get(std::size_t rowIndex, std::size_t columnIndex) {
+	if (table.size() <= rowIndex) {
 		throw std::out_of_range("Row out of bounds");
 	}
+
+	std::vector<std::shared_ptr<Type>> & row = table[rowIndex];
 	
-	const std::vector<Type *> & row = table[i];
-	
-	if (row.size() <= j) {
+	if (row.size() <= columnIndex) {
 		throw std::out_of_range("Column out of bounds");
 	}
-	
-	Type * elem = row[j];
+
+	std::shared_ptr<Type> elem = row[columnIndex];
 	return *elem;
 }
 
-const Type & Table::get(std::size_t i, std::size_t j) const {
-	return const_cast<Table *>(this)->get(i, j);
+const Type & Table::get(std::size_t rowIndex, std::size_t columnIndex) const {
+	return const_cast<Table *>(this)->get(rowIndex, columnIndex);
 }
 
-void Table::put(std::size_t i, std::size_t j, const Type & t) {
+void Table::put(std::size_t rowIndex, std::size_t columnIndex, const Type & type) {
 	// To prevent adding empty columns before
-	// actually checking if "j" is outside bounds
-	if (j >= 26) {
+	// actually checking if "columnIndex" is outside bounds
+	if (columnIndex >= 26) {
 		throw std::out_of_range("Cannot insert element outside column 26");
 	}
-	
-	Type * copied = Type::createCopy(t);
+
+	std::shared_ptr<Type> copied = Type::createCopy(type);
 	
 	// Check if row exists, if not add empty
-	while (table.size() <= i) {
+	while (table.size() <= rowIndex) {
 		table.emplace_back();
 	}
-	std::vector<Type *> & specifiedRow = table.at(i);
+	std::vector<std::shared_ptr<Type>> & specifiedRow = table.at(rowIndex);
 	
 	// Check if column exists, if not add empty
-	while (specifiedRow.size() <= j) {
+	while (specifiedRow.size() <= columnIndex) {
 		specifiedRow.push_back(nullptr);
 	}
-	auto & specifiedElement = specifiedRow.at(j);
+	auto & specifiedElement = specifiedRow.at(columnIndex);
 	
 	// If element exists, remove it
-	delete specifiedElement;
+//	delete specifiedElement;
 	
 	specifiedElement = copied;
 }
@@ -226,11 +218,11 @@ std::ostream & operator<<(std::ostream & os, const Table & t) {
 	for (std::size_t j = 0; j < columns; j++) {
 		for (std::size_t i = 0; i < rows; i++) {
 			try {
-				Type * elem = t.table.at(i).at(j);
+				const std::shared_ptr<Type> & elem = t.table.at(i).at(j);
 				if (elem == nullptr) {
 					continue;
 				}
-				auto * maybeFormulaType = dynamic_cast<FormulaType *>(elem);
+				auto * maybeFormulaType = dynamic_cast<FormulaType *>(elem.get());
 				if (maybeFormulaType != nullptr) {
 					maybeFormulaType->getCalculatedValue(t, i, j).size();
 				}
@@ -244,14 +236,14 @@ std::ostream & operator<<(std::ostream & os, const Table & t) {
 	for (std::size_t j = 0; j < columns; j++) {
 		for (std::size_t i = 0; i < rows; i++) {
 			try {
-				Type * elem = t.table.at(i).at(j);
+				const std::shared_ptr<Type> & elem = t.table.at(i).at(j);
 				if (elem == nullptr) {
 					continue;
 				}
 				
 				std::size_t elemLen = elem->toString().size();
 				
-				auto * maybeFormulaType = dynamic_cast<FormulaType *>(elem);
+				auto * maybeFormulaType = dynamic_cast<FormulaType *>(elem.get());
 				if (maybeFormulaType != nullptr) {
 					elemLen = maybeFormulaType->getCalculatedValue(t, i, j).size();
 				}
@@ -290,7 +282,7 @@ std::ostream & operator<<(std::ostream & os, const Table & t) {
 		os << "\n " << std::setw(rowsStrLen) << std::setfill(' ') << std::to_string(i + 1) << " |";
 		
 		for (std::size_t j = 0; j < columns; j++) {
-			Type * elem = nullptr;
+			std::shared_ptr<Type> elem = nullptr;
 			try {
 				elem = t.table.at(i).at(j);
 			}
@@ -301,7 +293,7 @@ std::ostream & operator<<(std::ostream & os, const Table & t) {
 				os << ' ';
 			}
 			else {
-				FormulaType * casted = dynamic_cast<FormulaType *>(elem);
+				FormulaType * casted = dynamic_cast<FormulaType *>(elem.get());
 				
 				// Check if FormulaType, else normal output
 				if (casted == nullptr) {

@@ -12,27 +12,27 @@ std::ostream & operator<<(std::ostream & os, const Type & type) {
 	return os << type.toString();
 }
 
-Type * Type::createCopy(const Type & t) {
+std::shared_ptr<Type> Type::createCopy(const Type & t) {
 	if (auto it = dynamic_cast<const IntegerType *>(&t)) {
-		return new IntegerType(*it);
+		return std::make_shared<IntegerType>(*it);
 	}
 	
 	if (auto dt = dynamic_cast<const DoubleType *>(&t)) {
-		return new DoubleType(*dt);
+		return std::make_shared<DoubleType>(*dt);
 	}
 	
 	if (auto ft = dynamic_cast<const FormulaType *>(&t)) {
-		return new FormulaType(*ft);
+		return std::make_shared<FormulaType>(*ft);
 	}
 	
 	if (auto st = dynamic_cast<const StringType *>(&t)) {
-		return new StringType(*st);
+		return std::make_shared<StringType>(*st);
 	}
 	
 	throw std::invalid_argument("Type is not registeded within Type::createCopy()");
 }
 
-Type * Type::fromString(const char * str) {
+std::shared_ptr<Type> Type::fromString(const char * str) {
 	try {
 		IntegerType it;
 		it.tryParse(str);
