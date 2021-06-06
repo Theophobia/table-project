@@ -7,6 +7,7 @@
 #include <table-project/tabletypes/FormulaType.h>
 #include <table-project/tabletypes/IntegerType.h>
 #include <table-project/tabletypes/StringType.h>
+#include <table-project/math/Parser.h>
 
 bool FormulaType::isOperationChar(char c) {
 	return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
@@ -157,79 +158,9 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 	}
 	// End of conversion to only numbers/arithmetic string
 
-	std::deque<std::string> arr = tokeniseFormula(oss.str());
+	std::string result = TableProject::Parser::parse(oss.str());
 
-	const char operations[5] = {'^', '*', '/', '+', '-'};
-	const std::size_t operationsCount = 5;
-
-	// Calculate arithmetic operator-by-operator
-	// Order is defined by operator precedence
-	for (std::size_t stage = 0; stage < operationsCount; stage++) {
-		for (std::size_t i = 0; i < arr.size(); i++) {
-			char c = arr[i][0];
-			if (c == operations[stage]) {
-				if (i < 1 || i > arr.size() - 1) {
-					throw std::invalid_argument("Improper c string");
-				}
-				const std::string & leftStr = arr[i - 1];
-				const std::string & rightStr = arr[i + 1];
-
-				std::shared_ptr<Type> leftPtr = std::shared_ptr<Type>(Type::fromString(leftStr));
-				std::shared_ptr<Type> rightPtr = std::shared_ptr<Type>(Type::fromString(rightStr));
-
-				if (leftPtr->getClass() != IntegerType().getClass() && leftPtr->getClass() != DoubleType().getClass()) {
-					throw std::invalid_argument("Left string is not number");
-				}
-
-				if (rightPtr->getClass() != IntegerType().getClass()
-					&& rightPtr->getClass() != DoubleType().getClass()) {
-					throw std::invalid_argument("Right string is not number");
-				}
-
-				switch (stage) {
-					case 0: {
-						arr.at(i + 1) = (leftPtr ^ rightPtr)->toString();
-						break;
-					}
-					case 1: {
-						arr.at(i + 1) = (leftPtr * rightPtr)->toString();
-						break;
-					}
-					case 2: {
-						arr.at(i + 1) = (leftPtr / rightPtr)->toString();
-						break;
-					}
-					case 3: {
-						arr.at(i + 1) = (leftPtr + rightPtr)->toString();
-						break;
-					}
-					case 4: {
-						arr.at(i + 1) = (leftPtr - rightPtr)->toString();
-						break;
-					}
-					default: {
-						std::string errMsg;
-						errMsg += "Formula arithmetic processing stage is out of bounds, ";
-						errMsg += "this may be a result of source code changes or errors within code";
-						throw std::runtime_error(errMsg);
-					}
-				}
-				arr.erase(arr.begin() + i - 1, arr.begin() + i + 1);
-
-				i = 0; // reset to start
-			}
-		}
-	}
-
-	if (arr.size() != 1) {
-		std::string errMsg;
-		errMsg += "Could not process formula at position ";
-		errMsg += Table::indexToColumnLetter(thisCol);
-		errMsg += std::to_string(thisRow + 1);
-		throw std::runtime_error(errMsg);
-	}
-
-	obj = Type::fromString(arr[0]);
+	obj = Type::fromString(result);
 }
 
 FormulaType::FormulaType(const char * str) {

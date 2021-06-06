@@ -43,10 +43,11 @@ std::vector<std::string> tokeniseInputString(const std::string & s) {
 
 void printCommands() {
 	std::cout << '\n' << "Available commands:" << '\n'
-			  << '\t' << "read <file-path>" << '\n'
-			  << '\t' << "write <file-path>" << '\n'
+			  << '\t' << "load <file-path>" << '\n'
+			  << '\t' << "save <file-path>" << '\n'
 			  << '\t' << "edit <cell-location> <value>" << '\n'
 			  << '\t' << "print" << '\n'
+			  << '\t' << "printcsv" << '\n'
 			  << '\t' << "exit" << '\n';
 }
 
@@ -80,6 +81,14 @@ int run() {
 						std::cout << *tablePtr;
 					}
 				}
+				else if (args[0] == "printcsv") {
+					if (!tablePtr) {
+						std::cout << "ERROR: no table loaded, cannot print" << std::endl;
+					}
+					else {
+						std::cout << tablePtr->toCSV();
+					}
+				}
 				else if (args[0] == "exit") {
 					return 0;
 				}
@@ -90,9 +99,9 @@ int run() {
 			}
 
 			case 2: {
-				if (args[0] == "read") {
+				if (args[0] == "load") {
 					if (!TableProject::FileUtil::fileExists(args[1])) {
-						std::cout << "ERROR: file does not exists or could not be opened" << std::endl;
+						std::cout << "ERROR: file does not exist or could not be opened" << std::endl;
 						break;
 					}
 
@@ -101,7 +110,7 @@ int run() {
 						tmpPtr = std::make_shared<Table>(args[1].c_str());
 					}
 					catch (std::exception & e) {
-						std::cout << "ERROR: could not read table from file\n\t" << e.what() << std::endl;
+						std::cout << "ERROR: could not load table from file\n\t" << e.what() << std::endl;
 						break;
 					}
 
@@ -111,9 +120,9 @@ int run() {
 
 					tablePtr = std::move(tmpPtr);
 
-					std::cout << "INFO: read table" << std::endl;
+					std::cout << "INFO: load table" << std::endl;
 				}
-				else if (args[0] == "write") {
+				else if (args[0] == "save") {
 					if (!tablePtr) {
 						std::cout << "ERROR: no table exists" << std::endl;
 						break;
@@ -127,7 +136,7 @@ int run() {
 					std::ofstream fout;
 					fout.open(args[1], std::ios::out);
 					if (!fout) {
-						std::cout << "ERROR: could not open file for write" << std::endl;
+						std::cout << "ERROR: could not open file for writing" << std::endl;
 						break;
 					}
 
@@ -182,7 +191,7 @@ int run() {
 						tablePtr->put(rowIndex, colIndex, *typePtr);
 					}
 					catch (std::exception & e) {
-						std::cout << "ERROR: could not insert cell into table\n\t" << e.what()  << std::endl;
+						std::cout << "ERROR: could not insert cell into table\n\t" << e.what() << std::endl;
 						break;
 					}
 				}
@@ -199,7 +208,5 @@ int run() {
 }
 
 int main() {
-//	return run();
-
-	TableProject::Parser::computeSimpleExpression("123", '+', "123");
+	return run();
 }
