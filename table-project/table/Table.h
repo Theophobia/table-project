@@ -14,21 +14,10 @@ class Table {
 	
 	void trunc();
 	void readFromFile(const char * filePath);
-	
-	/**
-	 * Convert index (starts from 0) to column letter (A-Z)
-	 *
-	 * @param i index to be converted
-	 * @return Column letter
-	 * @throws std::out_of_range If i is outside alphabet (currently alphabet has size 26)
-	 */
-	static char indexToColumnLetter(std::size_t i);
-	
-	static std::size_t columnLetterToIndex(char c);
-	static std::pair<std::size_t, std::size_t> cellCoordsToIndices(const std::pair<char, std::size_t> & cellCoords);
+
 public:
 	Table() = default;
-	Table(const char * filePath);
+	Table(const std::string & filePath);
 	
 	~Table() = default;
 	Table(const Table & other);
@@ -38,6 +27,8 @@ public:
 	
 	Type & get(std::size_t rowIndex, std::size_t columnIndex);
 	const Type & get(std::size_t rowIndex, std::size_t columnIndex) const;
+
+//	std::string getStringRepresentation(std::size_t rowIndex, std::size_t columnIndex);
 	
 	/**
 	 * Places a copy of the specified element at the specified position.
@@ -51,7 +42,26 @@ public:
 	void put(std::size_t rowIndex, std::size_t columnIndex, const Type & type);
 	
 	std::string toCSV() const;
+
+	void calculate();
 	
-	friend std::ostream & operator<<(std::ostream & os, const Table & table);
-//	friend std::istream & operator>>(std::istream & is, Table & table);
+	friend std::ostream & operator<<(std::ostream & os, Table & table);
+
+	/**
+	 * Convert index (starts from 0) to column letter (A-Z)
+	 *
+	 * @param i index to be converted
+	 * @return Column letter
+	 * @throws std::out_of_range If i is outside alphabet (currently alphabet has size 26)
+	 */
+	static char indexToColumnLetter(std::size_t i);
+
+	static std::size_t columnLetterToIndex(char c);
+
+	/**
+	 *
+	 * @param cellCoords
+	 * @return (rowIndex, colIndex)
+	 */
+	static std::pair<std::size_t, std::size_t> cellCoordsToIndices(const std::string & cellCoords);
 };

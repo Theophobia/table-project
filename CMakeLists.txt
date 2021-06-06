@@ -3,6 +3,7 @@ set(CMAKE_CXX_STANDARD 17)
 project(table-project)
 
 include_directories(${CMAKE_SOURCE_DIR})
+
 set(SOURCES
 	table-project/tabletypes/Type.cpp
 	table-project/tabletypes/IntegerType.cpp
@@ -11,7 +12,7 @@ set(SOURCES
 	table-project/tabletypes/FormulaType.cpp
 	table-project/table/Table.cpp
 	table-project/math/Operators.cpp
-)
+	)
 
 add_executable(Run ${SOURCES} table-project/main.cpp)
-add_executable(Test ${SOURCES} tests/test-main.cpp)
+add_executable(Test ${SOURCES} table-project-tests/test-main.cpp)

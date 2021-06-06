@@ -1,29 +1,200 @@
 #include <fstream>
 #include <iostream>
 
-#include <table-project/math/Operators.h>
-#include <table-project/table/Table.h>
-#include <table-project/tabletypes/DoubleType.h>
-#include <table-project/tabletypes/FormulaType.h>
-#include <table-project/tabletypes/IntegerType.h>
-#include <table-project/tabletypes/StringType.h>
+#include <table-project/TableProject.h>
 
-using namespace std;
+std::vector<std::string> tokeniseInputString(const std::string & s) {
+	std::vector<std::string> v;
+	std::string buffer;
+	bool isSkipWhitespace = true;
+
+	for (std::size_t i = 0; i < s.size(); i++) {
+		if (s[i] == '"') {
+			buffer += s[i];
+			isSkipWhitespace = !isSkipWhitespace;
+			continue;
+		}
+
+		if (s[i] == ' ') {
+
+			if (!isSkipWhitespace) {
+				buffer += s[i];
+				continue;
+			}
+
+			if (!buffer.empty()) {
+				v.push_back(buffer);
+				buffer.clear();
+				continue;
+			}
+
+			continue;
+		}
+
+		buffer += s[i];
+	}
+
+	if (!buffer.empty()) {
+		v.push_back(buffer);
+	}
+
+	return v;
+}
+
+void printCommands() {
+	std::cout << '\n' << "Available commands:" << '\n'
+			  << '\t' << "read <file-path>" << '\n'
+			  << '\t' << "write <file-path>" << '\n'
+			  << '\t' << "edit <cell-location> <value>" << '\n'
+			  << '\t' << "print" << '\n'
+			  << '\t' << "exit" << '\n';
+}
+
+void printUnknownCommand() {
+	std::cout << "Unknown command entered, please refer to the command list" << std::endl;
+}
+
+int run() {
+	std::shared_ptr<Table> tablePtr;
+
+	printCommands();
+	while (true) {
+		std::cout << "\n> ";
+
+		std::string inputString;
+		getline(std::cin, inputString);
+		std::vector<std::string> args = tokeniseInputString(inputString);
+
+		switch (args.size()) {
+			case 0: {
+				std::cout << "ERROR: no command entered, try again" << std::endl;
+				break;
+			}
+
+			case 1: {
+				if (args[0] == "print") {
+					if (!tablePtr) {
+						std::cout << "ERROR: no table loaded, cannot print" << std::endl;
+					}
+					else {
+						std::cout << *tablePtr;
+					}
+				}
+				else if (args[0] == "exit") {
+					return 0;
+				}
+				else {
+					printUnknownCommand();
+				}
+				break;
+			}
+
+			case 2: {
+				if (args[0] == "read") {
+					if (!TableProject::FileUtil::fileExists(args[1])) {
+						std::cout << "ERROR: file does not exists or could not be opened" << std::endl;
+						break;
+					}
+
+					std::shared_ptr<Table> tmpPtr;
+					try {
+						tmpPtr = std::make_shared<Table>(args[1].c_str());
+					}
+					catch (std::exception &) {
+						std::cout << "ERROR: could not read table from file" << std::endl;
+						break;
+					}
+
+					if (tablePtr) {
+						std::cout << "INFO: removing old table" << std::endl;
+					}
+
+					tablePtr = std::move(tmpPtr);
+
+					std::cout << "INFO: read table" << std::endl;
+				}
+				else if (args[0] == "write") {
+					if (!tablePtr) {
+						std::cout << "ERROR: no table exists" << std::endl;
+						break;
+					}
+
+					if (TableProject::FileUtil::fileExists(args[1])) {
+						std::cout << "ERROR: file already exists" << std::endl;
+						break;
+					}
+
+					std::ofstream fout;
+					fout.open(args[1], std::ios::out);
+					if (!fout) {
+						std::cout << "ERROR: could not open file for write" << std::endl;
+						break;
+					}
+
+					fout << tablePtr->toCSV();
+					fout.close();
+
+					std::cout << "INFO: wrote table to \"" << args[1] << '"' << std::endl;
+				}
+				else {
+					printUnknownCommand();
+				}
+				break;
+			}
+
+			case 3: {
+				if (args[0] == "edit") {
+					if (!tablePtr) {
+						tablePtr = std::make_shared<Table>();
+						std::cout << "INFO: created new table as one does not exist" << std::endl;
+					}
+
+					std::size_t rowIndex = -1;
+					std::size_t colIndex = -1;
+
+					try {
+						std::pair<std::size_t, std::size_t> cellIndices = Table::cellCoordsToIndices(args[1]);
+						rowIndex = cellIndices.first;
+						colIndex = cellIndices.second;
+					}
+					catch (std::exception &) {
+						std::cout << "ERROR: could not parse cell location" << std::endl;
+						break;
+					}
+
+					std::cout << "DEBUG: editing cell (" + std::to_string(rowIndex) + ", " + std::to_string(colIndex) + ")" << std::endl;
+
+					std::shared_ptr<Type> typePtr;
+					try {
+						typePtr = Type::fromString(args[2]);
+					}
+					catch (std::exception &) {
+						std::cout << "ERROR: could not parse passed cell data" << std::endl;
+						break;
+					}
+
+					std::cout << "DEBUG: cell object of class " + typePtr->getClass() << std::endl;
+
+					try {
+						tablePtr->put(rowIndex, colIndex, *typePtr);
+					}
+					catch (std::exception &) {
+						std::cout << "ERROR: could not insert cell into table" << std::endl;
+						break;
+					}
+				}
+				else {
+					printUnknownCommand();
+				}
+				break;
+			}
+		}
+	}
+
+	// Unreachable
+//	return 0;
+}
 
 int main() {
-	Table t;
-
-	t.put(0, 0, StringType("asd"));
-	t.put(0, 1, StringType("123"));
-	t.put(1, 0, IntegerType(123));
-	t.put(1, 1, IntegerType(123));
-	t.put(2, 0, FormulaType("A1+A2"));
-	t.put(2, 1, FormulaType("B1+B2"));
-
-	cout << t << endl
-		 << t.toCSV() << endl
-
-	ofstream("tmp2.csv") << t.toCSV(); // Auto close with process end
-
-	return 0;
+	return run();
 }

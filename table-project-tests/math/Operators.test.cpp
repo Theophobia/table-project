@@ -1,6 +1,7 @@
 #include <memory>
 
-#include <tests/doctest.h>
+#include <table-project-tests/doctest.h>
+
 #include <table-project/math/Operators.h>
 
 TEST_CASE("operator+(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
@@ -170,7 +171,7 @@ TEST_CASE("operator^(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 	// Assert
 	auto c_cast = dynamic_cast<DoubleType *>(c.get());
 	REQUIRE(nullptr != c_cast);
-	REQUIRE(TestUtil::isEqual(22.627416998, c_cast->getNumber(), 0.000000001));
+	REQUIRE(DoubleUtil::isEqual(22.627416998, c_cast->getNumber(), 0.000000001));
 }
 
 TEST_CASE("operator+/operator*(IntegerType, IntegerType)_AssocDistrib_Equals") {

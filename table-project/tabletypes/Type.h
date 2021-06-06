@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ostream>
-#include <bits/shared_ptr.h>
+#include <memory>
 
 class Type {
 
@@ -18,5 +18,13 @@ public:
 	friend std::ostream & operator<<(std::ostream & os, const Type & type);
 	
 	static std::shared_ptr<Type> createCopy(const Type & t);
-	static std::shared_ptr<Type> fromString(const char * str);
+
+	/**
+	 * TODO
+	 * @param s
+	 * @return
+	 *
+	 * @throws std::invalid_argument If string could not be parsed
+	 */
+	static std::shared_ptr<Type> fromString(const std::string & s);
 };

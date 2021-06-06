@@ -1,5 +1,7 @@
 #pragma once
 
+class Type;
+
 template<class T>
 class ParseError final : public std::exception {
 

@@ -1,4 +1,4 @@
-#include <tests/doctest.h>
+#include <table-project-tests/doctest.h>
 
 #include <table-project/tabletypes/StringType.h>
 

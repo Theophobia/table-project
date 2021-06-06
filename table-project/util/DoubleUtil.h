@@ -1,8 +1,6 @@
 #pragma once
 
-class TestUtil {
-
-public:
+namespace DoubleUtil {
 	static bool isEqual(long double a, long double b, long double epsilon) {
 		long double diff = a - b;
 		if (diff < 0) {
@@ -11,4 +9,4 @@ public:
 		
 		return diff < epsilon;
 	}
-};
+}

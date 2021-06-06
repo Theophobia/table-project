@@ -1,8 +1,4 @@
-#include <table-project/tabletypes/Type.h>
-#include <table-project/tabletypes/IntegerType.h>
-#include <table-project/tabletypes/DoubleType.h>
-#include <table-project/tabletypes/StringType.h>
-#include <table-project/tabletypes/FormulaType.h>
+#include <table-project/TableProject.h>
 
 Type::~Type() {
 
@@ -29,34 +25,34 @@ std::shared_ptr<Type> Type::createCopy(const Type & t) {
 		return std::make_shared<StringType>(*st);
 	}
 	
-	throw std::invalid_argument("Type is not registeded within Type::createCopy()");
+	throw std::invalid_argument("Type is not registered within Type::createCopy()");
 }
 
-std::shared_ptr<Type> Type::fromString(const char * str) {
+std::shared_ptr<Type> Type::fromString(const std::string & s) {
 	try {
 		IntegerType it;
-		it.tryParse(str);
+		it.tryParse(s);
 		return createCopy(it);
 	}
 	catch (std::exception &) {}
 	
 	try {
 		DoubleType dt;
-		dt.tryParse(str);
+		dt.tryParse(s);
 		return createCopy(dt);
 	}
 	catch (std::exception &) {}
 	
 	try {
 		FormulaType ft;
-		ft.tryParse(str);
+		ft.tryParse(s);
 		return createCopy(ft);
 	}
 	catch (std::exception &) {}
 	
 	try {
 		StringType st;
-		st.tryParse(str);
+		st.tryParse(s);
 		return createCopy(st);
 	}
 	catch (std::exception &) {}

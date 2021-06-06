@@ -56,7 +56,7 @@ std::deque<std::string> FormulaType::tokeniseFormula(const std::string & s) {
 			continue;
 		}
 
-		if (std::isdigit(c)) {
+		if (std::isdigit(c) || c == '.') {
 			buffer += c;
 			continue;
 		}
@@ -92,12 +92,12 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 			oss << formula[i];
 		}
 
-		// Check for constants
+			// Check for constants
 		else if (std::isdigit(formula[i])) {
 			oss << formula[i];
 		}
 
-		// Check for cell references
+			// Check for cell references
 		else if (std::isalpha(formula[i])) {
 			if (i == formula.size() - 1) {
 				// Incomplete cell reference
@@ -151,8 +151,8 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 			else if (maybeFormulaType) {
 				oss << maybeFormulaType->getCalculatedValue(table, rowNumber - 1, columnNumber - 1, depth - 1);
 			}
-			// IntegerType and DoubleType are
-			// trivially printable as integer/double
+				// IntegerType and DoubleType are
+				// trivially printable as integer/double
 			else {
 				oss << table.get(rowNumber - 1, columnNumber - 1);
 			}
@@ -286,14 +286,18 @@ void FormulaType::tryParse(const std::string & str) {
 }
 
 std::string FormulaType::toString() const {
-	return formula;
+	if (this->obj == nullptr) {
+		throw std::runtime_error("Value is null");
+	}
+	return this->obj->toString();
 }
 
 std::string FormulaType::toCSV() const {
 	return "=" + formula;
 }
 
-std::string FormulaType::getCalculatedValue(const Table & table, std::size_t thisRow, std::size_t thisCol, int depth) const {
+std::string
+FormulaType::getCalculatedValue(const Table & table, std::size_t thisRow, std::size_t thisCol, int depth) const {
 	if (this->obj == nullptr) {
 		throw std::runtime_error("Formula cannot be computed");
 	}
@@ -301,9 +305,12 @@ std::string FormulaType::getCalculatedValue(const Table & table, std::size_t thi
 }
 
 std::string FormulaType::getCalculatedValue(const Table & table, std::size_t thisRow, std::size_t thisCol, int depth) {
-	if (obj == nullptr) {
+	if (this->obj == nullptr) {
 		calculate(table, thisRow, thisCol, depth);
 	}
+
+	auto a = this->obj;
+	auto b = a->toString();
 
 	return this->obj->toString();
 }
