@@ -6,22 +6,23 @@
 #include <table-project/tabletypes/DoubleType.h>
 #include <table-project/tabletypes/StringType.h>
 #include <table-project/tabletypes/FormulaType.h>
+#include <table-project/TableProject.h>
 
 TypeData getTypeData(const std::shared_ptr<Type> & aPtr) {
 	TypeData td;
-	
+
 	Type * a = aPtr.get();
-	
+
 	auto * integerType = dynamic_cast<IntegerType *>(a);
 	auto * doubleType = dynamic_cast<DoubleType *>(a);
 	auto * stringType = dynamic_cast<StringType *>(a);
 	auto * formulaType = dynamic_cast<FormulaType *>(a);
-	
+
 	// Check "a" for integer or double contents
 	if (integerType) {
 		td.integerPart = integerType->getNumber();
 	}
-	
+
 	if (doubleType) {
 		td.hasDouble = true;
 		td.doublePart = doubleType->getNumber();
@@ -30,15 +31,15 @@ TypeData getTypeData(const std::shared_ptr<Type> & aPtr) {
 		try {
 			IntegerType it;
 			it.tryParse(stringType->toString());
-			
+
 			td.integerPart = it.getNumber();
 		}
 		catch (std::exception &) {}
-		
+
 		try {
 			DoubleType dt;
 			dt.tryParse(stringType->toString());
-			
+
 			td.doublePart = dt.getNumber();
 			td.hasDouble = true;
 		}
@@ -47,7 +48,7 @@ TypeData getTypeData(const std::shared_ptr<Type> & aPtr) {
 	else if (formulaType) {
 		throw std::runtime_error("Formula type arithmetic not supported");
 	}
-	
+
 	return td;
 }
 
@@ -55,26 +56,26 @@ std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, const std::s
 	if (!aPtr || !bPtr) {
 		throw std::runtime_error("aPtr or bPtr is nullptr");
 	}
-	
+
 	TypeData atd = getTypeData(aPtr);
 	TypeData btd = getTypeData(bPtr);
-	
+
 	if (atd.hasDouble && btd.hasDouble) {
 		return std::make_shared<DoubleType>(atd.doublePart + btd.doublePart);
 	}
-	
+
 	if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
 		return std::make_shared<DoubleType>(atd.doublePart + btd.integerPart);
 	}
-	
+
 	if (!atd.hasDouble && btd.hasDouble) {
 		return std::make_shared<DoubleType>(atd.integerPart + btd.doublePart);
 	}
-	
+
 	if (!atd.hasDouble && !btd.hasDouble) {
 		return std::make_shared<IntegerType>(atd.integerPart + btd.integerPart);
 	}
-	
+
 	throw std::runtime_error("Unexpected error");
 }
 
@@ -82,26 +83,26 @@ std::shared_ptr<Type> operator-(const std::shared_ptr<Type> & aPtr, const std::s
 	if (!aPtr || !bPtr) {
 		throw std::runtime_error("aPtr or bPtr is nullptr");
 	}
-	
+
 	TypeData atd = getTypeData(aPtr);
 	TypeData btd = getTypeData(bPtr);
-	
+
 	if (atd.hasDouble && btd.hasDouble) {
 		return std::make_shared<DoubleType>(atd.doublePart - btd.doublePart);
 	}
-	
+
 	if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
 		return std::make_shared<DoubleType>(atd.doublePart - btd.integerPart);
 	}
-	
+
 	if (!atd.hasDouble && btd.hasDouble) {
 		return std::make_shared<DoubleType>(atd.integerPart - btd.doublePart);
 	}
-	
+
 	if (!atd.hasDouble && !btd.hasDouble) {
 		return std::make_shared<IntegerType>(atd.integerPart - btd.integerPart);
 	}
-	
+
 	throw std::runtime_error("Unexpected error");
 }
 
@@ -109,26 +110,26 @@ std::shared_ptr<Type> operator*(const std::shared_ptr<Type> & aPtr, const std::s
 	if (!aPtr || !bPtr) {
 		throw std::runtime_error("aPtr or bPtr is nullptr");
 	}
-	
+
 	TypeData atd = getTypeData(aPtr);
 	TypeData btd = getTypeData(bPtr);
-	
+
 	if (atd.hasDouble && btd.hasDouble) {
 		return std::make_shared<DoubleType>(atd.doublePart * btd.doublePart);
 	}
-	
+
 	if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
 		return std::make_shared<DoubleType>(atd.doublePart * btd.integerPart);
 	}
-	
+
 	if (!atd.hasDouble && btd.hasDouble) {
 		return std::make_shared<DoubleType>(atd.integerPart * btd.doublePart);
 	}
-	
+
 	if (!atd.hasDouble && !btd.hasDouble) {
 		return std::make_shared<IntegerType>(atd.integerPart * btd.integerPart);
 	}
-	
+
 	throw std::runtime_error("Unexpected error");
 }
 
@@ -136,29 +137,55 @@ std::shared_ptr<Type> operator/(const std::shared_ptr<Type> & aPtr, const std::s
 	if (!aPtr || !bPtr) {
 		throw std::runtime_error("aPtr or bPtr is nullptr");
 	}
-	
+
 	TypeData atd = getTypeData(aPtr);
 	TypeData btd = getTypeData(bPtr);
-	
+
 	if (atd.hasDouble && btd.hasDouble) {
-		return std::make_shared<DoubleType>(atd.doublePart / btd.doublePart);
+//		return std::make_shared<DoubleType>(atd.doublePart / btd.doublePart);
+		long double num = atd.doublePart / btd.doublePart;
+		if (std::isnan(num) || std::isinf(num)) {
+			return std::make_shared<StringType>("#ERROR");
+		}
+		auto res = Type::fromString(std::to_string(num));
+		return res;
 	}
-	
-	if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
-		return std::make_shared<DoubleType>(atd.doublePart / btd.integerPart);
+
+	if (atd.hasDouble && !btd.hasDouble) {
+//		return std::make_shared<DoubleType>(atd.doublePart / btd.integerPart);
+		long double num = atd.doublePart / btd.integerPart;
+		if (std::isnan(num) || std::isinf(num)) {
+			return std::make_shared<StringType>("#ERROR");
+		}
+		auto res = Type::fromString(std::to_string(num));
+		return res;
 	}
-	
+
 	if (!atd.hasDouble && btd.hasDouble) {
-		return std::make_shared<DoubleType>(atd.integerPart / btd.doublePart);
+//		return std::make_shared<DoubleType>(atd.integerPart / btd.doublePart);
+
+		long double num = ((long double) atd.integerPart) / btd.doublePart;
+		if (std::isnan(num) || std::isinf(num)) {
+			return std::make_shared<StringType>("#ERROR");
+		}
+		auto res = Type::fromString(std::to_string(num));
+
+		return res;
 	}
-	
+
 	if (!atd.hasDouble && !btd.hasDouble) {
 		if (atd.integerPart % btd.integerPart == 0) {
-			return std::make_shared<IntegerType>(atd.integerPart / btd.integerPart);
+			return Type::fromString(std::to_string(atd.integerPart / btd.integerPart));
 		}
-		return std::make_shared<DoubleType>(((long double) atd.integerPart) / btd.integerPart);
+
+		long double num = ((long double) atd.integerPart) / btd.integerPart;
+		if (std::isnan(num) || std::isinf(num)) {
+			return std::make_shared<StringType>("#ERROR");
+		}
+		auto res = Type::fromString(std::to_string(num));
+		return res;
 	}
-	
+
 	throw std::runtime_error("Unexpected error");
 }
 
@@ -166,35 +193,48 @@ std::shared_ptr<Type> operator^(const std::shared_ptr<Type> & aPtr, const std::s
 	if (!aPtr || !bPtr) {
 		throw std::runtime_error("aPtr or bPtr is nullptr");
 	}
-	
+
 	TypeData atd = getTypeData(aPtr);
 	TypeData btd = getTypeData(bPtr);
-	
+
 	if (atd.hasDouble && btd.hasDouble) {
-		return std::make_shared<StringType>("#ERROR");
+		long double num = std::pow(atd.doublePart, btd.doublePart);
+		if (std::isnan(num) || std::isinf(num)) {
+			return std::make_shared<StringType>("#ERROR");
+		}
+		auto res = Type::fromString(std::to_string(num));
+		return res;
 	}
-	
+
 	if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
-		if (atd.doublePart < 0) {
+		long double num = std::pow(atd.doublePart, btd.integerPart);
+		if (std::isnan(num) || std::isinf(num)) {
 			return std::make_shared<StringType>("#ERROR");
 		}
-		return std::make_shared<DoubleType>(std::pow(atd.doublePart, btd.integerPart));
+		auto res = Type::fromString(std::to_string(num));
+		return res;
 	}
-	
+
 	if (!atd.hasDouble && btd.hasDouble) {
-		if (atd.integerPart < 0) {
+		long double num = std::pow(atd.integerPart, btd.doublePart);
+		if (std::isnan(num) || std::isinf(num)) {
 			return std::make_shared<StringType>("#ERROR");
 		}
-		return std::make_shared<DoubleType>(std::pow(atd.integerPart, btd.doublePart));
+		auto res = Type::fromString(std::to_string(num));
+		return res;
 	}
-	
+
 	if (!atd.hasDouble && !btd.hasDouble) {
-		if (btd.integerPart < 0) {
-			return std::make_shared<DoubleType>(std::pow(atd.integerPart, btd.integerPart));
+		long double num = std::pow(atd.integerPart, btd.integerPart);
+
+		if (TableProject::DoubleUtil::isWhole(num, 0.0001)) {
+			auto res = Type::fromString(std::to_string((std::int64_t) num));
+			return res;
 		}
-		return std::make_shared<IntegerType>(std::pow(atd.integerPart, btd.integerPart));
+		auto res = Type::fromString(std::to_string(num));
+		return res;
 	}
-	
+
 	throw std::runtime_error("Unexpected error");
 }
 

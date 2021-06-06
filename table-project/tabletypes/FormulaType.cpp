@@ -9,10 +9,7 @@
 #include <table-project/tabletypes/StringType.h>
 
 bool FormulaType::isOperationChar(char c) {
-	if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^') {
-		return true;
-	}
-	return false;
+	return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
 }
 
 bool FormulaType::isOperationChar(const std::string & s) {
@@ -177,8 +174,8 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 				const std::string & leftStr = arr[i - 1];
 				const std::string & rightStr = arr[i + 1];
 
-				std::shared_ptr<Type> leftPtr = std::shared_ptr<Type>(Type::fromString(leftStr.c_str()));
-				std::shared_ptr<Type> rightPtr = std::shared_ptr<Type>(Type::fromString(rightStr.c_str()));
+				std::shared_ptr<Type> leftPtr = std::shared_ptr<Type>(Type::fromString(leftStr));
+				std::shared_ptr<Type> rightPtr = std::shared_ptr<Type>(Type::fromString(rightStr));
 
 				if (leftPtr->getClass() != IntegerType().getClass() && leftPtr->getClass() != DoubleType().getClass()) {
 					throw std::invalid_argument("Left string is not number");
@@ -232,7 +229,7 @@ void FormulaType::calculate(const Table & table, std::size_t thisRow, std::size_
 		throw std::runtime_error(errMsg);
 	}
 
-	obj = Type::fromString(arr[0].c_str());
+	obj = Type::fromString(arr[0]);
 }
 
 FormulaType::FormulaType(const char * str) {

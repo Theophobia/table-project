@@ -8,6 +8,7 @@ class Table;
 
 class FormulaType : public Type {
 	friend class Table;
+
 	static const int FORMULA_DEFAULT_DEPTH = 5;
 
 protected:
@@ -36,11 +37,15 @@ public:
 	std::string toCSV() const override;
 	const std::string & getClass() const override;
 
-	std::string getCalculatedValue(const Table & table, std::size_t thisRow, std::size_t thisCol,
-								   int depth = FORMULA_DEFAULT_DEPTH) const;
+	std::string getCalculatedValue(
+		const Table & table, std::size_t thisRow, std::size_t thisCol,
+		int depth = FORMULA_DEFAULT_DEPTH
+	) const;
 
-	std::string getCalculatedValue(const Table & table, std::size_t thisRow, std::size_t thisCol,
-								   int depth = FORMULA_DEFAULT_DEPTH);
+	std::string getCalculatedValue(
+		const Table & table, std::size_t thisRow, std::size_t thisCol,
+		int depth = FORMULA_DEFAULT_DEPTH
+	);
 
 	bool operator==(const Type & t) const override;
 };

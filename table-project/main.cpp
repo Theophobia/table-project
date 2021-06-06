@@ -199,5 +199,7 @@ int run() {
 }
 
 int main() {
-	return run();
+//	return run();
+
+	TableProject::Parser::computeSimpleExpression("123", '+', "123");
 }

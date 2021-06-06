@@ -9,7 +9,7 @@ TEST_CASE("DoubleType_tryParse_NormalDouble_NoThrow") {
 	
 	// Act and Assert
 	REQUIRE_NOTHROW(ft.tryParse("123.4"));
-	REQUIRE(DoubleUtil::isEqual(123.4, ft.getNumber(), 0.000000000001));
+	REQUIRE(TableProject::DoubleUtil::isEqual(123.4, ft.getNumber(), 0.000000000001));
 }
 
 TEST_CASE("DoubleType_tryParse_LeadingZero_NoThrow") {
@@ -18,7 +18,7 @@ TEST_CASE("DoubleType_tryParse_LeadingZero_NoThrow") {
 	
 	// Act and Assert
 	REQUIRE_NOTHROW(ft.tryParse("0001.1"));
-	REQUIRE(DoubleUtil::isEqual(1.1, ft.getNumber(), 0.000000000001));
+	REQUIRE(TableProject::DoubleUtil::isEqual(1.1, ft.getNumber(), 0.000000000001));
 }
 
 TEST_CASE("DoubleType_tryParse_TrailingZero_NoThrow") {
@@ -27,7 +27,7 @@ TEST_CASE("DoubleType_tryParse_TrailingZero_NoThrow") {
 	
 	// Act and Assert
 	REQUIRE_NOTHROW(ft.tryParse("10.01000"));
-	REQUIRE(DoubleUtil::isEqual(10.01, ft.getNumber(), 0.000000000001));
+	REQUIRE(TableProject::DoubleUtil::isEqual(10.01, ft.getNumber(), 0.000000000001));
 }
 
 TEST_CASE("DoubleType_tryParse_ZeroWholePart_NoThrow") {
@@ -36,7 +36,7 @@ TEST_CASE("DoubleType_tryParse_ZeroWholePart_NoThrow") {
 	
 	// Act and Assert
 	REQUIRE_NOTHROW(ft.tryParse("000.1"));
-	REQUIRE(DoubleUtil::isEqual(0.1, ft.getNumber(), 0.000000000001));
+	REQUIRE(TableProject::DoubleUtil::isEqual(0.1, ft.getNumber(), 0.000000000001));
 }
 
 TEST_CASE("DoubleType_tryParse_ZeroFractionalPart_Throws") {

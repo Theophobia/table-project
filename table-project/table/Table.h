@@ -11,9 +11,6 @@ class Table {
 	friend class FormulaType;
 	
 	std::vector<std::vector<std::shared_ptr<Type>>> table;
-	
-	void trunc();
-	void readFromFile(const char * filePath);
 
 public:
 	Table() = default;

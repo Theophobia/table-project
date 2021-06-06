@@ -4,53 +4,6 @@
 
 #include <table-project/TableProject.h>
 
-void Table::trunc() {
-	this->table.clear();
-}
-
-void Table::readFromFile(const char * filePath) {
-	std::ifstream fileIn(filePath, std::ios::in);
-	if (!fileIn) {
-		throw std::runtime_error("File could not be opened for reading into table");
-	}
-
-	std::ostringstream buffer;
-	std::size_t currRow = 0;
-	std::size_t currCol = 0;
-
-	char c; // TODO check
-	while (true) {
-		fileIn >> c;
-
-		if (!fileIn) {
-			break;
-		}
-
-		if (c == ',') {
-			if (!buffer.str().empty()) {
-				// TODO parse and table.put() here
-			}
-
-			currCol++;
-			buffer.clear();
-			continue;
-		}
-		if (c == '\n') {
-			if (!buffer.str().empty()) {
-				// TODO parse and table.put() here
-			}
-
-			currRow++;
-			currCol = 0;
-			buffer.clear();
-			continue;
-		}
-
-		buffer << c;
-	}
-
-}
-
 Table::Table(const std::string & filePath) {
 	std::ifstream fileIn(filePath, std::ios::in);
 	if (!fileIn) {
