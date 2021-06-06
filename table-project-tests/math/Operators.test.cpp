@@ -4,6 +4,8 @@
 
 #include <table-project/math/Operators.h>
 
+using namespace TableProject;
+
 TEST_CASE("operator+(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 	// Arrange
 	auto a = std::make_shared<IntegerType>(3);

@@ -3,7 +3,8 @@
 #include <string>
 #include <vector>
 
-#include <table-project/TableProject.h>
+#include <table-project/util/VectorUtil.h>
+#include <table-project/tabletypes/StringType.h>
 
 namespace TableProject::Parser {
 
@@ -237,7 +238,11 @@ namespace TableProject::Parser {
 				// "sIndex" is index of operation
 				const std::string lhsString = s.substr(opStart, sIndex - opStart);
 				const std::string rhsString = s.substr(sIndex + 1, opEnd - sIndex - 1);
-				const std::string operationResult = computeSimpleExpression(lhsString, currOp, rhsString);
+				std::string operationResult = computeSimpleExpression(lhsString, currOp, rhsString);
+
+				if (operationResult == StringType::getError().toString()) {
+					return operationResult;
+				}
 
 				std::string sStart = s.substr(0, opStart);
 				std::string sEnd = s.substr(opEnd);

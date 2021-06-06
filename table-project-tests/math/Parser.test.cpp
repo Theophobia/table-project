@@ -2,6 +2,8 @@
 
 #include <table-project/TableProject.h>
 
+using namespace TableProject;
+
 TEST_CASE("Parser_computeSimpleExpression()_IT+IT_Equals") {
     // Arrange
     std::int64_t num1 = 123;

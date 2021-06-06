@@ -6,60 +6,65 @@
 #include <table-project/tabletypes/IntegerType.h>
 #include <table-project/tabletypes/DoubleType.h>
 
-class IntegerType;
-class DoubleType;
+namespace TableProject {
+	class IntegerType;
 
-class StringType : public Type {
+	class DoubleType;
 
-protected:
-    std::string text;
+	class StringType : public Type {
 
-public:
-    StringType() = default;
+	protected:
+		std::string text;
 
-    explicit StringType(const std::string &text);
+	public:
+		StringType() = default;
 
-    const std::string &getText() const;
+		explicit StringType(const std::string & text);
 
-    void setText(const std::string &text);
+		const std::string & getText() const;
 
-    void tryParse(const std::string &str) override;
+		void setText(const std::string & text);
 
-    std::string toString() const override;
+		void tryParse(const std::string & str) override;
 
-    std::string toCSV() const override;
+		std::string toString() const override;
 
-    const std::string &getClass() const override;
+		std::string toCSV() const override;
 
-    /**
-     *
-     * @return true if object's text representation can be casted to an IntegerType
-     */
-    bool isIntegerCastable() const;
+		const std::string & getClass() const override;
 
-    /**
-     *
-     * @return true if object's text representation can be casted to a DoubleType
-     */
-    bool isDoubleCastable() const;
+		/**
+		 *
+		 * @return true if object's text representation can be casted to an IntegerType
+		 */
+		bool isIntegerCastable() const;
 
-    /**
-     *
-     * @return A IntegerType object whose number
-     * is casted from this object's text
-     *
-     * @throws  std::runtime_error If object is not IntegerType-castable
-     */
-    explicit operator IntegerType() const;
+		/**
+		 *
+		 * @return true if object's text representation can be casted to a DoubleType
+		 */
+		bool isDoubleCastable() const;
 
-    /**
-     *
-     * @return A DoubleType object whose number
-     * is casted from this object's text
-     *
-     * @throws  std::runtime_error If object is not DoubleType-castable
-     */
-	explicit operator DoubleType() const;
+		/**
+		 *
+		 * @return A IntegerType object whose number
+		 * is casted from this object's text
+		 *
+		 * @throws  std::runtime_error If object is not IntegerType-castable
+		 */
+		explicit operator IntegerType() const;
 
-    bool operator==(const Type &t) const override;
-};
+		/**
+		 *
+		 * @return A DoubleType object whose number
+		 * is casted from this object's text
+		 *
+		 * @throws  std::runtime_error If object is not DoubleType-castable
+		 */
+		explicit operator DoubleType() const;
+
+		bool operator==(const Type & t) const override;
+
+		static StringType getError();
+	};
+}

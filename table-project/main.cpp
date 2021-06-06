@@ -56,6 +56,8 @@ void printUnknownCommand() {
 }
 
 int run() {
+	using namespace TableProject;
+	
 	std::shared_ptr<Table> tablePtr;
 
 	printCommands();
@@ -105,7 +107,7 @@ int run() {
 						break;
 					}
 
-					std::shared_ptr<Table> tmpPtr;
+					std::shared_ptr<TableProject::Table> tmpPtr;
 					try {
 						tmpPtr = std::make_shared<Table>(args[1].c_str());
 					}

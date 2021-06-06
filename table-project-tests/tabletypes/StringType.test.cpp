@@ -2,6 +2,8 @@
 
 #include <table-project/tabletypes/StringType.h>
 
+using namespace TableProject;
+
 TEST_CASE("StringType_tryParse_SurroundedString_NoThrow") {
     // Arrange
     StringType st;

@@ -2,6 +2,8 @@
 
 #include <table-project/tabletypes/IntegerType.h>
 
+using namespace TableProject;
+
 TEST_CASE("IntegerType_tryParse_NormalInteger_NoThrow") {
 	// Arrange
 	IntegerType it;

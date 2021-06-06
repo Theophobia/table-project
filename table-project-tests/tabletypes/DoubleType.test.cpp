@@ -3,6 +3,8 @@
 
 #include <table-project/tabletypes/DoubleType.h>
 
+using namespace TableProject;
+
 TEST_CASE("DoubleType_tryParse_NormalDouble_NoThrow") {
 	// Arrange
 	DoubleType ft;

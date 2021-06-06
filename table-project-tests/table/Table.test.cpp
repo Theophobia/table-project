@@ -6,6 +6,8 @@
 #include <table-project/tabletypes/FormulaType.h>
 #include <table-project/tabletypes/StringType.h>
 
+using namespace TableProject;
+
 TEST_CASE("Table_calculate()_FormulaPlusMinusCancellation_CorrectValues") {
 	Table table;
 	table.put(0, 0, IntegerType(2));
