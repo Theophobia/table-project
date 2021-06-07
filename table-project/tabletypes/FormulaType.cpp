@@ -50,7 +50,7 @@ namespace TableProject {
 						break;
 					}
 				}
-				std::size_t columnNumber = 1 + (std::toupper(formula[i]) - 'A');
+				std::size_t columnNumber = 1 + Table::columnLetterToIndex(formula[i]);
 
 				// Recursion check
 				if (thisRow == rowNumber && thisCol == columnNumber) {

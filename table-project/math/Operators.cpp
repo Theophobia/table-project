@@ -142,7 +142,6 @@ namespace TableProject {
 		TypeData btd = getTypeData(bPtr);
 
 		if (atd.hasDouble && btd.hasDouble) {
-//		return std::make_shared<DoubleType>(atd.doublePart / btd.doublePart);
 			long double num = atd.doublePart / btd.doublePart;
 			if (std::isnan(num) || std::isinf(num)) {
 				return std::make_shared<StringType>(StringType::getError());
@@ -152,7 +151,6 @@ namespace TableProject {
 		}
 
 		if (atd.hasDouble && !btd.hasDouble) {
-//		return std::make_shared<DoubleType>(atd.doublePart / btd.integerPart);
 			long double num = atd.doublePart / btd.integerPart;
 			if (std::isnan(num) || std::isinf(num)) {
 				return std::make_shared<StringType>(StringType::getError());
@@ -162,12 +160,20 @@ namespace TableProject {
 		}
 
 		if (!atd.hasDouble && btd.hasDouble) {
-//		return std::make_shared<DoubleType>(atd.integerPart / btd.doublePart);
-
 			long double num = ((long double) atd.integerPart) / btd.doublePart;
 			if (std::isnan(num) || std::isinf(num)) {
 				return std::make_shared<StringType>(StringType::getError());
 			}
+
+			// Result may be actually an integer
+			if (TableProject::DoubleUtil::isWhole(num, 0.00001)) {
+				std::int64_t actuallyInt64 = (std::int64_t) num;
+
+				auto res = Type::fromString(std::to_string(actuallyInt64));
+
+				return res;
+			}
+
 			auto res = Type::fromString(std::to_string(num));
 
 			return res;

@@ -4,6 +4,7 @@
 // table-project/util
 #include <table-project/util/DoubleUtil.h>
 #include <table-project/util/FileUtil.h>
+#include <table-project/util/StringUtil.h>
 #include <table-project/util/VectorUtil.h>
 
 

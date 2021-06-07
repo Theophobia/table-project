@@ -1,7 +1,7 @@
 #include <table-project/tabletypes/IntegerType.h>
-#include <table-project/exception/ParseError.h>
 
 #include <memory>
+#include <table-project/TableProject.h>
 
 namespace TableProject {
 	IntegerType::IntegerType(std::int64_t number) {
@@ -21,36 +21,13 @@ namespace TableProject {
 	}
 
 	void IntegerType::tryParse(const std::string & str) {
-		bool isNegative = false;
-		std::int64_t tmp = 0;
-		const std::size_t size = str.size();
-
-		// Check for sign
-		int i = 0;
-		if (str[i] == '+') {
-			i++;
-			isNegative = false;
+		try {
+			std::int64_t i = TableProject::StringUtil::toInt64(str, true);
+			this->number = i;
 		}
-		else if (str[i] == '-') {
-			i++;
-			isNegative = true;
+		catch (std::exception & e) {
+			throw ParseError<IntegerType>("Could not parse string as integer");
 		}
-
-		// Loop over rest
-		for (; i < size; i++) {
-			if (!std::isdigit(str[i])) {
-				throw ParseError<IntegerType>("Illegal character while parsing integer");
-			}
-
-			tmp = 10 * tmp + (str[i] - '0');
-		}
-
-		// Add negative sign if needed
-		if (isNegative) {
-			tmp = -tmp;
-		}
-
-		number = tmp;
 	}
 
 	std::string IntegerType::toString() const {

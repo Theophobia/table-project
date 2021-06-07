@@ -160,8 +160,8 @@ int run() {
 						std::cout << "INFO: created new table as one does not exist" << std::endl;
 					}
 
-					std::size_t rowIndex = -1;
-					std::size_t colIndex = -1;
+					std::size_t rowIndex;
+					std::size_t colIndex;
 
 					try {
 						std::pair<std::size_t, std::size_t> cellIndices = Table::cellCoordsToIndices(args[1]);
@@ -181,6 +181,7 @@ int run() {
 					std::shared_ptr<Type> typePtr;
 					try {
 						typePtr = Type::fromString(args[2]);
+
 					}
 					catch (std::exception & e) {
 						std::cout << "ERROR: could not parse passed cell data\n\t" << e.what() << std::endl;

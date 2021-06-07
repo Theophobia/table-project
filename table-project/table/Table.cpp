@@ -254,11 +254,15 @@ namespace TableProject {
 		bool isBetween_AZ = (c >= 'A' && c <= 'Z');
 		bool isBetween_az = (c >= 'a' && c <= 'z');
 
-		if (!isBetween_AZ && !isBetween_az) {
+		if (isBetween_az) {
+			return c - 'a';
+		}
+		else if (isBetween_AZ) {
+			return c - 'A';
+		}
+		else {
 			throw std::invalid_argument("Column letter character must be between 'A' and 'Z' or 'a' and 'z'");
 		}
-
-		return c - 'A';
 	}
 
 	std::pair<std::size_t, std::size_t> TableProject::Table::cellCoordsToIndices(const std::string & cellCoords) {

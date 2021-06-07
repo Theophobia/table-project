@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <cstddef>
 
 /**
  * Contains utilities for working with floating point numbers.

@@ -2,6 +2,7 @@
 
 #include <table-project/tabletypes/DoubleType.h>
 #include <table-project/exception/ParseError.h>
+#include <table-project/TableProject.h>
 
 namespace TableProject {
 	DoubleType::DoubleType(long double number) {
@@ -21,82 +22,19 @@ namespace TableProject {
 	}
 
 	void DoubleType::tryParse(const std::string & str) {
-		bool isNegative = false;
-		long double tmp = 0;
-		const std::size_t size = str.size();
-
-		// Check for sign
-		int i = 0;
-		if (str[i] == '+') {
-			i++;
-			isNegative = false;
+		try {
+			long double ld = TableProject::StringUtil::toLongDouble(str, true);
+			this->number = ld;
 		}
-		else if (str[i] == '-') {
-			i++;
-			isNegative = true;
+		catch (std::exception & e) {
+			throw ParseError<DoubleType>("Could not parse string as double");
 		}
-
-		// Parse whole part
-		bool hasWholePart = false;
-		for (; i < size; i++) {
-			if (str[i] == '.') {
-				i++;
-				break;
-			}
-
-			if (!std::isdigit(str[i])) {
-				throw ParseError<DoubleType>("Illegal character while parsing floating point, nondigit in whole part");
-			}
-
-			tmp = 10 * tmp + (str[i] - '0');
-			hasWholePart = true;
-		}
-
-		// Parse fractional part
-		bool hasFractionalPart = false;
-		long double magnitude = 0.1;
-		for (; i < size; i++) {
-			if (!std::isdigit(str[i])) {
-				throw ParseError<DoubleType>(
-					"Illegal character while parsing floating point, nondigit in fractional part");
-			}
-
-			int digit = str[i] - '0';
-
-			if (digit != 0) {
-				tmp = tmp + magnitude * digit;
-				hasFractionalPart = true;
-			}
-
-			magnitude /= 10;
-		}
-
-		// Check if has both whole and fractional part
-		// ex: ".1", "1.0", "1.0000"
-		if (!hasWholePart) {
-			throw ParseError<DoubleType>("No whole part while parsing floating point");
-		}
-		if (!hasFractionalPart) {
-			throw ParseError<DoubleType>("No fractional part while parsing floating point");
-		}
-
-		// Add negative sign if needed
-		if (isNegative) {
-			tmp = -tmp;
-		}
-
-		number = tmp;
 	}
 
 	std::string DoubleType::toString() const {
-//	return std::to_string(number); // This leaves trailing zeros
-
-//	std::ostringstream oss;
-//	oss << number;
-//	return oss.str();
 
 		// Source: https://stackoverflow.com/questions/15165502/double-to-string-without-scientific-notation-or-trailing-zeros-efficiently
-		size_t len = std::snprintf(0, 0, "%.10Lf", number);
+		size_t len = std::snprintf(nullptr, 0, "%.10Lf", number);
 		std::string s(len + 1, 0);
 
 		std::snprintf(&s[0], len + 1, "%.10Lf", number);

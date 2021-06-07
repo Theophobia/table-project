@@ -41,6 +41,15 @@ TEST_CASE("DoubleType_tryParse_ZeroWholePart_NoThrow") {
 	REQUIRE(TableProject::DoubleUtil::isEqual(0.1, ft.getNumber(), 0.000000000001));
 }
 
+TEST_CASE("DoubleType_tryParse_NoWholePart_NoThrow") {
+	// Arrange
+	DoubleType ft;
+
+	// Act and Assert
+	REQUIRE_NOTHROW(ft.tryParse(".1"));
+	REQUIRE(TableProject::DoubleUtil::isEqual(0.1, ft.getNumber(), 0.000000000001));
+}
+
 TEST_CASE("DoubleType_tryParse_ZeroFractionalPart_Throws") {
 	// Arrange
 	DoubleType ft;
@@ -55,14 +64,6 @@ TEST_CASE("DoubleType_tryParse_NoFractionalPart_Throws") {
 	
 	// Act and Assert
 	REQUIRE_THROWS(ft.tryParse("34"));
-}
-
-TEST_CASE("DoubleType_tryParse_NoWholePart_Throws") {
-	// Arrange
-	DoubleType ft;
-	
-	// Act and Assert
-	REQUIRE_THROWS(ft.tryParse(".3"));
 }
 
 TEST_CASE("DoubleType_tryParse_NoWholeOrFractionalPart_Throws") {

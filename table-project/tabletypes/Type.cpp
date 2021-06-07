@@ -26,25 +26,8 @@ namespace TableProject {
 	}
 
 	std::shared_ptr<Type> Type::fromString(const std::string & s) {
-		try {
-			long double convertDouble = std::stold(s);
-			if (TableProject::DoubleUtil::isWhole(convertDouble, 0.000001)) {
-				long long convertInteger = (long long) std::roundl(convertDouble);
-				return createCopy(IntegerType(convertInteger));
-			}
-			return createCopy(DoubleType(convertDouble));
-		}
-		catch (std::exception &) {}
 
 		try {
-			long long convertInteger = std::stoll(s);
-			return createCopy(IntegerType(convertInteger));
-		}
-		catch (std::exception &) {}
-
-
-		try {
-			// Unreachable?
 			IntegerType it;
 			it.tryParse(s);
 			return createCopy(it);
@@ -52,7 +35,6 @@ namespace TableProject {
 		catch (std::exception &) {}
 
 		try {
-			// Unreachable?
 			DoubleType dt;
 			dt.tryParse(s);
 			return createCopy(dt);
