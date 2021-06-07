@@ -180,4 +180,12 @@ namespace TableProject::StringUtil {
 
 		return result;
 	}
+
+	static std::string removeWrappedQuotes(const std::string & s) {
+		if (s.size() >= 2 && s[0] == '"' && s[s.size() - 1] == '"') {
+			return s.substr(1, s.size() - 2);
+		}
+
+		return s;
+	}
 }

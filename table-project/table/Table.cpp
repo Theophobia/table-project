@@ -169,6 +169,11 @@ namespace TableProject {
 			}
 		}
 
+		// Nothing to print if there are no rows or columns
+		if (rows == 0 || columns == 0) {
+			return os;
+		}
+
 		// Pre-calculate formula type cells
 		// This is done to correctly calculate max size
 		t.calculate();

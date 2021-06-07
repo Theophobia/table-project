@@ -43,9 +43,10 @@ std::vector<std::string> tokeniseInputString(const std::string & s) {
 
 void printCommands() {
 	std::cout << '\n' << "Available commands:" << '\n'
-			  << '\t' << "load <file-path>" << '\n'
-			  << '\t' << "save <file-path>" << '\n'
 			  << '\t' << "edit <cell-location> <value>" << '\n'
+			  << '\t' << "open <file-path>" << '\n'
+			  << '\t' << "saveas <file-path>" << '\n'
+			  << '\t' << "save" << '\n'
 			  << '\t' << "print" << '\n'
 			  << '\t' << "printcsv" << '\n'
 			  << '\t' << "exit" << '\n';
@@ -57,8 +58,9 @@ void printUnknownCommand() {
 
 int run() {
 	using namespace TableProject;
-	
+
 	std::shared_ptr<Table> tablePtr;
+	std::string lastFileName;
 
 	printCommands();
 	while (true) {
@@ -75,21 +77,44 @@ int run() {
 			}
 
 			case 1: {
-				if (args[0] == "print") {
+				if (args[0] == "save") {
+					if (lastFileName.empty()) {
+						std::cout << "ERROR: have not used any file before, unknown file to save to" << std::endl;
+						continue;
+					}
+
 					if (!tablePtr) {
-						std::cout << "ERROR: no table loaded, cannot print" << std::endl;
+						std::cout << "ERROR: no table exists in memory, nothing to save" << std::endl;
+						continue;
 					}
-					else {
-						std::cout << *tablePtr;
+
+//					lastFileName = TableProject::StringUtil::removeWrappedQuotes(lastFileName);
+					std::ofstream fout;
+					fout.open(lastFileName, std::ios::out | std::ios::trunc);
+
+					if (!fout) {
+						std::cout << "ERROR: could not open file for writing" << std::endl;
+						continue;
 					}
+
+					fout << tablePtr->toCSV();
+					fout.close();
+
+					std::cout << "INFO: wrote table to \"" << lastFileName << "\"" << std::endl;
+				}
+				else if (args[0] == "print") {
+					if (!tablePtr) {
+						std::cout << "INFO: no table exists in memory, nothing to print" << std::endl;
+						continue;
+					}
+					std::cout << *tablePtr;
 				}
 				else if (args[0] == "printcsv") {
 					if (!tablePtr) {
-						std::cout << "ERROR: no table loaded, cannot print" << std::endl;
+						std::cout << "INFO: no table exists in memory, nothing to print" << std::endl;
+						continue;
 					}
-					else {
-						std::cout << tablePtr->toCSV();
-					}
+					std::cout << tablePtr->toCSV();
 				}
 				else if (args[0] == "exit") {
 					return 0;
@@ -101,10 +126,13 @@ int run() {
 			}
 
 			case 2: {
-				if (args[0] == "load") {
+				if (args[0] == "open") {
+					args[1] = TableProject::StringUtil::removeWrappedQuotes(args[1]);
+
 					if (!TableProject::FileUtil::fileExists(args[1])) {
-						std::cout << "ERROR: file does not exist or could not be opened" << std::endl;
-						break;
+						std::cout << "ERROR: file does not exist or could not be opened, nothing was opened"
+								  << std::endl;
+						continue;
 					}
 
 					std::shared_ptr<TableProject::Table> tmpPtr;
@@ -112,8 +140,8 @@ int run() {
 						tmpPtr = std::make_shared<Table>(args[1].c_str());
 					}
 					catch (std::exception & e) {
-						std::cout << "ERROR: could not load table from file\n\t" << e.what() << std::endl;
-						break;
+						std::cout << "ERROR: could not read table from file\n\t" << e.what() << std::endl;
+						continue;
 					}
 
 					if (tablePtr) {
@@ -121,31 +149,55 @@ int run() {
 					}
 
 					tablePtr = std::move(tmpPtr);
+					lastFileName = args[1];
 
-					std::cout << "INFO: load table" << std::endl;
+					std::cout << "INFO: load table\n"
+							  << "INFO: latest file detected is now \"" << lastFileName << "\"" << std::endl;
 				}
-				else if (args[0] == "save") {
+				else if (args[0] == "saveas") {
+					args[1] = TableProject::StringUtil::removeWrappedQuotes(args[1]);
+
 					if (!tablePtr) {
-						std::cout << "ERROR: no table exists" << std::endl;
-						break;
+						std::cout << "INFO: no table exists, saving empty file" << std::endl;
+//						break;
 					}
 
 					if (TableProject::FileUtil::fileExists(args[1])) {
-						std::cout << "ERROR: file already exists" << std::endl;
-						break;
+						std::cout << "INFO: file already exists, do you want to overwrite? "
+								  << "Enter 'y' or 'n'\n" << "> ";
+
+						std::getline(std::cin, inputString);
+
+						if (inputString.size() == 1 && inputString[0] == 'y') {
+							std::cout << "INFO: overwriting file \"" << args[1] << "\" with current data" << std::endl;
+						}
+						else if (inputString.size() == 1 && inputString[0] == 'n') {
+							std::cout << "ERROR: file already exists, did not save" << std::endl;
+							break;
+						}
+						else {
+							std::cout << "ERROR: could not understand what was entered\n"
+									  << "ERROR: file already exists, did not save" << std::endl;
+							break;
+						}
 					}
 
 					std::ofstream fout;
-					fout.open(args[1], std::ios::out);
+					fout.open(args[1], std::ios::out | std::ios::trunc);
 					if (!fout) {
-						std::cout << "ERROR: could not open file for writing" << std::endl;
+						std::cout << "ERROR: could not open file for writing, did not save" << std::endl;
 						break;
 					}
 
-					fout << tablePtr->toCSV();
+					if (tablePtr) {
+						fout << tablePtr->toCSV();
+					}
 					fout.close();
 
-					std::cout << "INFO: wrote table to \"" << args[1] << '"' << std::endl;
+					lastFileName = args[1];
+
+					std::cout << "INFO: wrote table to \"" << args[1] << "\"\n"
+							  << "INFO: latest file detected is \"" << lastFileName << "\"" << std::endl;
 				}
 				else {
 					printUnknownCommand();
@@ -181,7 +233,6 @@ int run() {
 					std::shared_ptr<Type> typePtr;
 					try {
 						typePtr = Type::fromString(args[2]);
-
 					}
 					catch (std::exception & e) {
 						std::cout << "ERROR: could not parse passed cell data\n\t" << e.what() << std::endl;
@@ -197,6 +248,12 @@ int run() {
 						std::cout << "ERROR: could not insert cell into table\n\t" << e.what() << std::endl;
 						break;
 					}
+
+					std::string reproducedCellCoords;
+					reproducedCellCoords += TableProject::Table::indexToColumnLetter(colIndex);
+					reproducedCellCoords += std::to_string(rowIndex + 1);
+
+					std::cout << "INFO: set cell " << reproducedCellCoords << " with data " << args[2] << std::endl;
 				}
 				else {
 					printUnknownCommand();

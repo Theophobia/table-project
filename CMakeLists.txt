@@ -12,6 +12,7 @@ set(SOURCES
 	table-project/tabletypes/FormulaType.cpp
 	table-project/table/Table.cpp
 	table-project/math/Operators.cpp
+	table-project/Application.cpp
 	)
 
 add_executable(Run ${SOURCES} table-project/main.cpp)
