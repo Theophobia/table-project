@@ -1,34 +1,41 @@
 #pragma once
 
 #include <memory>
-#include "Type.h"
+#include <table-project/tabletypes/Type.h>
 
 namespace TableProject {
-/**
- * Type used in cells to represent a 64-bit integer.
- * <p>
- *
- */
-	class IntegerType : public Type {
+	/**
+	 * Type used in cells to represent a 64-bit integer.
+	 */
+	class IntegerType final : public Type {
 
 	protected:
 		std::int64_t number = 0;
 
 	public:
+		~IntegerType() = default;
 		IntegerType() = default;
 		explicit IntegerType(std::int64_t number);
 
-		~IntegerType() = default;
-
-		IntegerType(const IntegerType & other);
-		IntegerType & operator=(const IntegerType & other);
-
-		IntegerType(IntegerType && other) noexcept;
-		IntegerType & operator=(IntegerType && other) noexcept;
-
+		/**
+		 * Dynamically allocate a copy of this object and return a shared_ptr to it.
+		 *
+		 * @return
+		 */
 		operator std::shared_ptr<IntegerType>() const;
 
+		/**
+		 * Getter for underlying number.
+		 *
+		 * @return 64-bit number of this object.
+		 */
 		std::int64_t getNumber() const;
+
+		/**
+		 * Setter for underlying number.
+		 *
+		 * @param number
+		 */
 		void setNumber(std::int64_t number);
 
 		void tryParse(const std::string & str) override;

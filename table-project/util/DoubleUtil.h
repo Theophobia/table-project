@@ -2,6 +2,9 @@
 
 #include <cmath>
 
+/**
+ * Contains utilities for working with floating point numbers.
+ */
 namespace TableProject::DoubleUtil {
 	static bool isEqual(long double a, long double b, long double epsilon) {
 		long double diff = a - b;

@@ -1,6 +1,5 @@
 #include <memory>
 #include <cmath>
-
 #include <table-project/math/Operators.h>
 #include <table-project/tabletypes/IntegerType.h>
 #include <table-project/tabletypes/DoubleType.h>
@@ -240,19 +239,19 @@ namespace TableProject {
 	}
 
 
-	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long long b) {
-		return operator+(aPtr, std::make_shared<IntegerType>(b));
-	}
-
-	std::shared_ptr<Type> operator+(long long a, const std::shared_ptr<Type> & bPtr) {
-		return operator+(bPtr, a);
-	}
-
-	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long double b) {
-		return operator+(aPtr, std::make_shared<DoubleType>(b));
-	}
-
-	std::shared_ptr<Type> operator+(long double a, const std::shared_ptr<Type> & bPtr) {
-		return operator+(bPtr, a);
-	}
+//	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long long b) {
+//		return operator+(aPtr, std::make_shared<IntegerType>(b));
+//	}
+//
+//	std::shared_ptr<Type> operator+(long long a, const std::shared_ptr<Type> & bPtr) {
+//		return operator+(bPtr, a);
+//	}
+//
+//	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long double b) {
+//		return operator+(aPtr, std::make_shared<DoubleType>(b));
+//	}
+//
+//	std::shared_ptr<Type> operator+(long double a, const std::shared_ptr<Type> & bPtr) {
+//		return operator+(bPtr, a);
+//	}
 }

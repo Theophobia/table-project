@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <table-project/TableProject.h>
+#include <table-project/exception/NoSuchElementError.h>
 
 namespace TableProject {
 	Table::Table(const std::string & filePath) {
@@ -80,6 +81,10 @@ namespace TableProject {
 		}
 
 		std::shared_ptr<Type> elem = row[columnIndex];
+		if (elem == nullptr) {
+			throw TableProject::NoSuchElementError("Element is null");
+		}
+
 		return *elem;
 	}
 

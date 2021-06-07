@@ -3,6 +3,11 @@
 namespace TableProject {
 	class Type;
 
+	/**
+	 * Error object used by Type.tryParse()
+	 *
+	 * @tparam T subclass of Type
+	 */
 	template<class T>
 	class ParseError final : public std::exception {
 

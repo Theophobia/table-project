@@ -2,6 +2,9 @@
 
 #include <vector>
 
+/**
+ * Contains utilities for working with vector objects.
+ */
 namespace TableProject::VectorUtil {
 
 	template<class T>

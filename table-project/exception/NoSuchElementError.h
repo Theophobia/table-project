@@ -4,6 +4,9 @@
 #include <string>
 
 namespace TableProject {
+	/**
+	 * Error object used by Table for specifying that no such element exists in table.
+	 */
 	class NoSuchElementError final : public std::exception {
 		std::string msg;
 

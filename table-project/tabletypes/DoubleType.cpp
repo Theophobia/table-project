@@ -8,6 +8,10 @@ namespace TableProject {
 		this->number = number;
 	}
 
+	DoubleType::operator std::shared_ptr<DoubleType>() const {
+		return std::make_shared<DoubleType>(*this);
+	}
+
 	long double DoubleType::getNumber() const {
 		return number;
 	}

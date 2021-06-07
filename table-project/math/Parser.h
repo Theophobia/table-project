@@ -2,10 +2,12 @@
 
 #include <string>
 #include <vector>
-
 #include <table-project/util/VectorUtil.h>
 #include <table-project/tabletypes/StringType.h>
 
+/**
+ * Contains functions for doing simple arithmetic with exponents, multiplication, division, addition, subtraction.
+ */
 namespace TableProject::Parser {
 
 	static const std::vector<char> & getBinaryOperations() {
@@ -45,6 +47,11 @@ namespace TableProject::Parser {
 			case ('-'): {
 				result = Type::fromString(lhs) - Type::fromString(rhs);
 				break;
+			}
+			default: {
+				std::string errMsg;
+				errMsg += "Binary operations have been changed, but code has not been fully adjusted";
+				throw std::runtime_error(errMsg);
 			}
 		}
 
@@ -99,7 +106,6 @@ namespace TableProject::Parser {
 					// If it is, then we need to stop
 					if (std::isdigit(s[opStart - 1])) {
 						if (isLHSNegative) {
-//							opStart++;
 							break;
 						}
 						lhs = (s[opStart - 1] + lhs);
@@ -161,7 +167,6 @@ namespace TableProject::Parser {
 				std::string rhs;
 				std::size_t opEnd;
 				bool isRHSDouble = false;
-//				bool isRHSNegative = false;
 
 				for (opEnd = sIndex + 1; opEnd < s.size(); opEnd++) {
 					// Nothing special if we have a digit,
@@ -171,21 +176,11 @@ namespace TableProject::Parser {
 						continue;
 					}
 
-					// If we find a '-' we must keep
-					// track if we find another one
+					// If we find a '-' it must be at the start of the iteration
+					// in order for it to be appended
 					if (s[opEnd] == '-' && opEnd == sIndex + 1) {
-//						if (isRHSNegative) {
-//							// Error
-//							std::string errMsg;
-//							errMsg += "Found double negative sign at index ";
-//							errMsg += std::to_string(removedWhitespaces + opEnd);
-//							throw std::runtime_error(errMsg);
-//						}
-//						else {
-//							isRHSNegative = true;
-							rhs += s[opEnd]; // Also append '-'
-							continue;
-//						}
+						rhs += s[opEnd];
+						continue;
 					}
 
 					// If we find '.' we must keep
@@ -195,7 +190,7 @@ namespace TableProject::Parser {
 							// Error
 							std::string errMsg;
 							errMsg += "Found double dot sign at index ";
-							errMsg += std::to_string(removedWhitespaces + opEnd);
+							errMsg += std::to_string(removedWhitespaces + opEnd); // Might be incorrect
 							throw std::runtime_error(errMsg);
 						}
 						else {
@@ -244,32 +239,11 @@ namespace TableProject::Parser {
 					return operationResult;
 				}
 
-				std::string sStart = s.substr(0, opStart);
+				std::string sStart = s.substr(0, opStart - 0);
 				std::string sEnd = s.substr(opEnd);
-
-				// If "sStart" doesn't end with an op
-				// and "operationResult" doesn't start with an op
-				// append a '+'
-//				if (!TableProject::VectorUtil::contains(binOps, sStart[sStart.size() - 1]) &&
-//					!TableProject::VectorUtil::contains(binOps, operationResult[operationResult.size() - 1])) {
-//					sStart += '+';
-//				}
 
 				// Restructure "s"
 				s = sStart + operationResult + sEnd;
-
-				// Check if "s" is now a number
-//				try {
-//					auto typePtr = Type::fromString(s);
-//
-//					if (typePtr->getClass() == IntegerType().getClass()) {
-//						return s;
-//					}
-//					if (typePtr->getClass() == DoubleType().getClass()) {
-//						return s;
-//					}
-//				}
-//				catch (std::exception & e) {}
 
 				// Try to find a computation of current operation over again
 				// sIndex++ makes this 0
@@ -277,7 +251,6 @@ namespace TableProject::Parser {
 			}
 			// End of "s" iteration
 		}
-
 		// End of operation iteration
 
 		return s;

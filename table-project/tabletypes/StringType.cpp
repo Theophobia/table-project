@@ -41,7 +41,6 @@ namespace TableProject {
 	}
 
 	std::string StringType::toString() const {
-//	return '"' + text + '"';
 		return text;
 	}
 

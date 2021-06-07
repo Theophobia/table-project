@@ -65,7 +65,7 @@ int run() {
 		std::cout << "\n> ";
 
 		std::string inputString;
-		getline(std::cin, inputString);
+		std::getline(std::cin, inputString);
 		std::vector<std::string> args = tokeniseInputString(inputString);
 
 		switch (args.size()) {

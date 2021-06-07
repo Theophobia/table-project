@@ -8,26 +8,6 @@ namespace TableProject {
 		this->number = number;
 	}
 
-	IntegerType::IntegerType(const IntegerType & other) {
-		*this = other;
-	}
-
-	IntegerType & IntegerType::operator=(const IntegerType & other) {
-		this->number = other.number;
-		return *this;
-	}
-
-	IntegerType::IntegerType(IntegerType && other) noexcept {
-		*this = std::move(other);
-	}
-
-	IntegerType & IntegerType::operator=(IntegerType && other) noexcept {
-		this->number = other.number;
-
-		other.number = 0;
-		return *this;
-	}
-
 	IntegerType::operator std::shared_ptr<IntegerType>() const {
 		return std::make_shared<IntegerType>(*this);
 	}
