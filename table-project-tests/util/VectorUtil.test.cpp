@@ -23,5 +23,5 @@ TEST_CASE("VectorUtil_contains_NonEmptyVectorWithElement_True") {
 	std::vector<int> v = {0, 1, 2, 3, 4};
 
 	// Act and Assert
-	REQUIRE(false == TableProject::VectorUtil::contains(v, 0));
+	REQUIRE(true == TableProject::VectorUtil::contains(v, 0));
 }
