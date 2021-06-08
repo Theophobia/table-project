@@ -32,10 +32,12 @@ namespace TableProject {
 		void calculate(Table & table, std::size_t thisRow, std::size_t thisCol, int depth = FORMULA_DEFAULT_DEPTH);
 
 	public:
-		~FormulaType() = default;
+		~FormulaType() override = default;
 		FormulaType() = default;
 		explicit FormulaType(const char * str);
 		explicit FormulaType(const std::string & str);
+
+		const std::string & getFormula() const;
 
 		void tryParse(const std::string & str) override;
 		std::string toString() const override;

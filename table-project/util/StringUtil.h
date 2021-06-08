@@ -4,6 +4,9 @@
 
 namespace TableProject::StringUtil {
 	static bool isInteger(const std::string & s) {
+		if (s.empty()) {
+			return false;
+		}
 		for (std::size_t i = 0; i < s.size(); i++) {
 			char c = s[i];
 
@@ -22,6 +25,7 @@ namespace TableProject::StringUtil {
 
 	static bool isDouble(const std::string & s) {
 		bool isPointFound = false;
+		bool hasDigitAfterPoint = false;
 		for (std::size_t i = 0; i < s.size(); i++) {
 			char c = s[i];
 
@@ -41,12 +45,15 @@ namespace TableProject::StringUtil {
 			}
 
 			if (c >= '0' && c <= '9') {
+				if (isPointFound) {
+					hasDigitAfterPoint = true;
+				}
 				continue;
 			}
 
 			return false;
 		}
-		return true;
+		return isPointFound && hasDigitAfterPoint;
 	}
 
 	/**
@@ -63,6 +70,10 @@ namespace TableProject::StringUtil {
 			if (!isInteger(s)) {
 				throw std::invalid_argument("String is not integer");
 			}
+		}
+
+		if (s.empty()) {
+			throw std::invalid_argument("String is empty");
 		}
 
 		bool isNegative = false;
@@ -104,7 +115,7 @@ namespace TableProject::StringUtil {
 	 * @param doCheckBeforehand Whether to check for validity before any conversion
 	 * @return
 	 *
-	 * @throws std::invalid_argument If invalid string
+	 * @throws std::invalid_argument If invalid string or string is integer
 	 */
 	static long double toLongDouble(const std::string & s, bool doCheckBeforehand = false) {
 		if (doCheckBeforehand) {
@@ -129,7 +140,7 @@ namespace TableProject::StringUtil {
 		}
 
 		// Parse whole part
-		bool hasWholePart = false;
+		// It may be non-existant
 		for (; i < size; i++) {
 			if (s[i] == '.') {
 				i++;
@@ -141,7 +152,6 @@ namespace TableProject::StringUtil {
 			}
 
 			result = 10 * result + (s[i] - '0');
-			hasWholePart = true;
 		}
 
 		// Parse fractional part
@@ -164,11 +174,8 @@ namespace TableProject::StringUtil {
 			magnitude /= 10;
 		}
 
-		// Check if has both whole and fractional part
+		// Check if has fractional part
 		// ex: ".1", "1.0", "1.0000"
-//		if (!hasWholePart) {
-//			throw ParseError<DoubleType>("No whole part while parsing floating point");
-//		}
 		if (!hasFractionalPart) {
 			throw std::invalid_argument("No fractional part while parsing floating point");
 		}

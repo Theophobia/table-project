@@ -4,6 +4,7 @@
 #include <ostream>
 
 #include <table-project/tabletypes/Type.h>
+#include <table-project/tabletypes/FormulaType.h>
 
 
 namespace TableProject {

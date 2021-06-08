@@ -54,6 +54,10 @@ namespace TableProject {
 	}
 
 	bool StringType::isIntegerCastable() const {
+		if (text.empty()) {
+			return false;
+		}
+
 		try {
 			IntegerType it;
 			it.tryParse(text);
@@ -65,6 +69,10 @@ namespace TableProject {
 	}
 
 	bool StringType::isDoubleCastable() const {
+		if (text.empty()) {
+			return false;
+		}
+
 		try {
 			DoubleType dt;
 			dt.tryParse(text);
@@ -76,6 +84,9 @@ namespace TableProject {
 	}
 
 	StringType::operator IntegerType() const {
+		if (!isIntegerCastable()) {
+			throw std::runtime_error("String object is not castable to an integer");
+		}
 		try {
 			IntegerType it;
 			it.tryParse(text);
@@ -87,6 +98,9 @@ namespace TableProject {
 	}
 
 	StringType::operator DoubleType() const {
+		if (!isDoubleCastable()) {
+			throw std::runtime_error("String object is not castable to a double");
+		}
 		try {
 			DoubleType dt;
 			dt.tryParse(text);

@@ -73,6 +73,8 @@ namespace TableProject {
 			return true;
 		}
 
-		return this->getNumber() == casted->getNumber();
+		// Compare string representations,
+		// because two visibly equal doubles can be !=
+		return std::to_string(this->getNumber()) == std::to_string(casted->getNumber());
 	}
 }

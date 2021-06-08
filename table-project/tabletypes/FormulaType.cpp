@@ -120,7 +120,15 @@ namespace TableProject {
 		this->formula = str;
 	}
 
+	const std::string & FormulaType::getFormula() const {
+		return formula;
+	}
+
 	void FormulaType::tryParse(const std::string & str) {
+		if (str.empty()) {
+			throw std::invalid_argument("Formula cannot be empty");
+		}
+
 		if (str[0] != '=') {
 			throw std::invalid_argument("Formula must start with '='");
 		}

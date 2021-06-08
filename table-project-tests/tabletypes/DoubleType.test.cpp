@@ -5,6 +5,96 @@
 
 using namespace TableProject;
 
+TEST_CASE("DoubleType_toString_PositiveNumber_StringMatches") {
+	// Arrange
+	long double d = 123.4;
+	DoubleType dt(d);
+	// From: https://stackoverflow.com/a/20729194
+	char buf[64];
+	std::sprintf(buf, "%-.*LG", 16, d);
+	std::string expected = buf;
+
+	// Act
+	std::string actual = dt.toString();
+
+	// Assert
+	REQUIRE(expected == actual);
+}
+
+TEST_CASE("DoubleType_toCSV_PositiveNumber_StringMatches") {
+	// Arrange
+	long double d = 123.4;
+	DoubleType dt(d);
+	// From: https://stackoverflow.com/a/20729194
+	char buf[64];
+	std::sprintf(buf, "%-.*LG", 16, d);
+	std::string expected = buf;
+
+	// Act
+	std::string actual = dt.toCSV();
+
+	// Assert
+	REQUIRE(expected == actual);
+}
+
+TEST_CASE("DoubleType_toCSVtoString_PositiveNumber_BothStringsMatch") {
+	// Arrange
+	long double d = 123.4;
+	DoubleType dt(d);
+
+	// Act
+	std::string csv = dt.toCSV();
+	std::string str = dt.toString();
+
+	// Assert
+	REQUIRE(str == csv);
+}
+
+TEST_CASE("DoubleType_toString_NegativeNumber_StringMatches") {
+	// Arrange
+	long double d = -123.4;
+	DoubleType dt(d);
+	// From: https://stackoverflow.com/a/20729194
+	char buf[64];
+	std::sprintf(buf, "%-.*LG", 16, d);
+	std::string expected = buf;
+
+	// Act
+	std::string actual = dt.toString();
+
+	// Assert
+	REQUIRE(expected == actual);
+}
+
+TEST_CASE("DoubleType_toCSV_NegativeNumber_StringMatches") {
+	// Arrange
+	long double d = -123.4;
+	DoubleType dt(d);
+	// From: https://stackoverflow.com/a/20729194
+	char buf[64];
+	std::sprintf(buf, "%-.*LG", 16, d);
+	std::string expected = buf;
+
+	// Act
+	std::string actual = dt.toCSV();
+
+	// Assert
+	REQUIRE(expected == actual);
+}
+
+TEST_CASE("DoubleType_toCSVtoString_NegativeNumber_BothStringsMatch") {
+	// Arrange
+	long double d = 123.4;
+	DoubleType dt(d);
+
+	// Act
+	std::string csv = dt.toCSV();
+	std::string str = dt.toString();
+
+	// Assert
+	REQUIRE(str == csv);
+}
+
 TEST_CASE("DoubleType_tryParse_NormalDouble_NoThrow") {
 	// Arrange
 	DoubleType ft;

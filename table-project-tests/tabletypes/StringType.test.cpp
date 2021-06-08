@@ -4,6 +4,86 @@
 
 using namespace TableProject;
 
+TEST_CASE("StringType_isIntegerCastable_PositiveInteger_True") {
+	// Arrange
+	StringType st("123");
+
+	// Act and Assert
+	REQUIRE(true == st.isIntegerCastable());
+}
+
+TEST_CASE("StringType_isIntegerCastable_NegativeInteger_True") {
+	// Arrange
+	StringType st("-123");
+
+	// Act and Assert
+	REQUIRE(true == st.isIntegerCastable());
+}
+
+TEST_CASE("StringType_isIntegerCastable_Double_False") {
+	// Arrange
+	StringType st("123.4");
+
+	// Act and Assert
+	REQUIRE(false == st.isIntegerCastable());
+}
+
+TEST_CASE("StringType_isIntegerCastable_SomeString_False") {
+	// Arrange
+	StringType st("123a");
+
+	// Act and Assert
+	REQUIRE(false == st.isIntegerCastable());
+}
+
+TEST_CASE("StringType_isIntegerCastable_EmptyString_False") {
+	// Arrange
+	StringType st("");
+
+	// Act and Assert
+	REQUIRE(false == st.isIntegerCastable());
+}
+
+TEST_CASE("StringType_isDoubleCastable_PositiveDouble_True") {
+	// Arrange
+	StringType st("123.4");
+
+	// Act and Assert
+	REQUIRE(true == st.isDoubleCastable());
+}
+
+TEST_CASE("StringType_isDoubleCastable_NegativeDouble_True") {
+	// Arrange
+	StringType st("-123.4");
+
+	// Act and Assert
+	REQUIRE(true == st.isDoubleCastable());
+}
+
+TEST_CASE("StringType_isDoubleCastable_Integer_False") {
+	// Arrange
+	StringType st("123");
+
+	// Act and Assert
+	REQUIRE(false == st.isDoubleCastable());
+}
+
+TEST_CASE("StringType_isDoubleCastable_SomeString_False") {
+	// Arrange
+	StringType st("123.4a");
+
+	// Act and Assert
+	REQUIRE(false == st.isDoubleCastable());
+}
+
+TEST_CASE("StringType_isDoubleCastable_EmptyString_False") {
+	// Arrange
+	StringType st("");
+
+	// Act and Assert
+	REQUIRE(false == st.isDoubleCastable());
+}
+
 TEST_CASE("StringType_tryParse_SurroundedString_NoThrow") {
     // Arrange
     StringType st;
