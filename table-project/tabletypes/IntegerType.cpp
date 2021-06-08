@@ -23,11 +23,23 @@ namespace TableProject {
 	void IntegerType::tryParse(const std::string & str) {
 		try {
 			std::int64_t i = TableProject::StringUtil::toInt64(str, true);
+
+			// If we passed, then we have a regular integer
+			// Assign it and return, as we have other code below
 			this->number = i;
+			return;
 		}
-		catch (std::exception & e) {
-			throw ParseError<IntegerType>("Could not parse string as integer");
+		catch (std::exception & e) {}
+
+		// Check for zero-fractional double, as that is an integer
+		if (TableProject::StringUtil::isZeroFractionalDouble(str)) {
+			// Safe to cast to int
+			std::int64_t i = std::stoll(str);
+			this->number = i;
+			return;
 		}
+
+		throw ParseError<IntegerType>("Could not parse string as integer");
 	}
 
 	std::string IntegerType::toString() const {

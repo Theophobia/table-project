@@ -31,6 +31,24 @@ TEST_CASE("IntegerType_tryParse_OnlyZeros_NoThrow") {
 	REQUIRE(0 == it.getNumber());
 }
 
+TEST_CASE("IntegerType_tryParse_SingleZeroFractionalDouble_NoThrow") {
+	// Arrange
+	IntegerType it;
+
+	// Act and Assert
+	REQUIRE_NOTHROW(it.tryParse("123.0"));
+	REQUIRE(123 == it.getNumber());
+}
+
+TEST_CASE("IntegerType_tryParse_MultiZeroFractionalDouble_NoThrow") {
+	// Arrange
+	IntegerType it;
+
+	// Act and Assert
+	REQUIRE_NOTHROW(it.tryParse("123.0000000"));
+	REQUIRE(123 == it.getNumber());
+}
+
 TEST_CASE("IntegerType_tryParse_DoublePassed_Throws") {
 	// Arrange
 	IntegerType it;

@@ -23,7 +23,13 @@ namespace TableProject {
 	public:
 		~Table() = default;
 		Table() = default;
-		Table(const std::string & filePath);
+
+		/**
+		 * Creates table using the contents of a CSV-formatted file.
+		 *
+		 * @param filePath File path to be used
+		 */
+		explicit Table(const std::string & filePath);
 
 		Table(const Table & other);
 		Table & operator=(const Table & other);
@@ -63,7 +69,8 @@ namespace TableProject {
 		 * @param columnIndex
 		 * @param type
 		 *
-		 * @throws std::out_of_range If "columnIndex" is greater than or equal to 26
+		 * @throws
+		 * 		std::out_of_range If "columnIndex" is greater than 25
 		 */
 		void put(std::size_t rowIndex, std::size_t columnIndex, const Type & type);
 
@@ -87,7 +94,9 @@ namespace TableProject {
 		 *
 		 * @param i index to be converted
 		 * @return Column letter
-		 * @throws std::out_of_range If i is outside alphabet (currently alphabet has size 26)
+		 *
+		 * @throws
+		 * 		std::out_of_range If i is outside alphabet (currently alphabet has size 26)
 		 */
 		static char indexToColumnLetter(std::size_t i);
 
@@ -104,6 +113,9 @@ namespace TableProject {
 		 *
 		 * @param cellCoords
 		 * @return (rowIndex, colIndex)
+		 *
+		 * @throws
+		 * 		std::invalid_argument If string is not a cell coordinate
 		 */
 		static std::pair<std::size_t, std::size_t> cellCoordsToIndices(const std::string & cellCoords);
 	};

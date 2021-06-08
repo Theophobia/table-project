@@ -168,7 +168,8 @@ namespace TableProject {
 			return true;
 		}
 
-		return this->formula == casted->formula; // TODO: Check obj
+		// Do not check object, as it does not matter
+		return this->formula == casted->formula;
 	}
 
 	const std::string & FormulaType::getClass() const {

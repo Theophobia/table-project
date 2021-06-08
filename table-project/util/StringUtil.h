@@ -188,4 +188,38 @@ namespace TableProject::StringUtil {
 
 		return s;
 	}
+
+	static bool isZeroFractionalDouble(const std::string & s) {
+		bool isDecimalPointFound = false;
+		bool hasDigitAfterDecimalPoint = false;
+
+		for (std::size_t i = 0; i < s.size(); i++) {
+			char c = s[i];
+
+			if (std::isdigit(c)) {
+				if (isDecimalPointFound) {
+					if (c != '0') {
+						return false;
+					}
+					hasDigitAfterDecimalPoint = true;
+				}
+				continue;
+			}
+
+			if (c == '.') {
+				if (isDecimalPointFound) {
+					// Two decimal points, incorrect string
+					return false;
+				}
+				else {
+					isDecimalPointFound = true;
+				}
+				continue;
+			}
+
+			return false;
+		}
+
+		return isDecimalPointFound && hasDigitAfterDecimalPoint;
+	}
 }

@@ -1,9 +1,6 @@
 #pragma once
 
 
-#include <table-project/Application.h>
-
-
 // table-project/util
 #include <table-project/util/DoubleUtil.h>
 #include <table-project/util/FileUtil.h>

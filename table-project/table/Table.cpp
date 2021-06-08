@@ -1,9 +1,7 @@
 #include <fstream>
 #include <iomanip>
 #include <memory>
-
 #include <table-project/TableProject.h>
-#include <table-project/exception/NoSuchElementError.h>
 
 namespace TableProject {
 	Table::Table(const std::string & filePath) {
@@ -92,15 +90,10 @@ namespace TableProject {
 		return const_cast<Table *>(this)->get(rowIndex, columnIndex);
 	}
 
-//std::string Table::getStringRepresentation(std::size_t rowIndex, std::size_t columnIndex) {
-//	calculate();
-//	return get(rowIndex, columnIndex).toString();
-//}
-
 	void Table::put(std::size_t rowIndex, std::size_t columnIndex, const Type & type) {
 		// To prevent adding empty columns before
 		// actually checking if "columnIndex" is outside bounds
-		if (columnIndex >= 26) {
+		if (columnIndex > 25) {
 			throw std::out_of_range("Cannot insert element outside column 26");
 		}
 
@@ -118,9 +111,7 @@ namespace TableProject {
 		}
 		auto & specifiedElement = specifiedRow.at(columnIndex);
 
-		// If element exists, remove it
-//	delete specifiedElement;
-
+		// Overwrites element if exists
 		specifiedElement = copied;
 	}
 

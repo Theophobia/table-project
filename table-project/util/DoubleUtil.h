@@ -13,7 +13,7 @@ namespace TableProject::DoubleUtil {
 			diff = -diff;
 		}
 		
-		return diff < epsilon;
+		return diff <= epsilon;
 	}
 
 	static bool isWhole(long double d, long double epsilon) {
