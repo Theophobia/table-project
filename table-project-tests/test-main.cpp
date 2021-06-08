@@ -15,3 +15,4 @@
 
 #include <table-project-tests/util/StringUtil.test.cpp>
 #include <table-project-tests/util/DoubleUtil.test.cpp>
+#include <table-project-tests/util/VectorUtil.test.cpp>
