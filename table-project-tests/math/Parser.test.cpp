@@ -357,3 +357,26 @@ TEST_CASE("Parser_parse()_5+3*3-2^6+45/2_Equals-27.5") {
 	REQUIRE("-27.5" == result);
 }
 
+TEST_CASE("Parser_parse()_5+3*3-2^6+3*2/3^4/2_Equals-49.962963") {
+	// Arrange
+
+	// Act
+	std::string result = TableProject::Parser::parse("5+3*3-2^6+3*2/3^4/2");
+
+	// Assert
+	REQUIRE("-49.962963" == result);
+}
+
+TEST_CASE("Parser_parse()_5-3*3-2^5+3*2/3^4/2_Equals-35.962963") {
+	// Arrange
+
+	// Act
+	std::string result = TableProject::Parser::parse("5-3*3-2^5+3*2/3^4/2");
+
+	// Assert
+	REQUIRE("-35.962963" == result);
+}
+
+/*
+ * Checked with https://www.wolframalpha.com
+ */
