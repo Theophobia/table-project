@@ -13,16 +13,16 @@ namespace TableProject {
 		std::int64_t integerPart = 0;
 	};
 
-	TypeData getTypeData(const std::shared_ptr<Type> & aPtr);
+	TypeData getTypeData(const std::unique_ptr<Type> & aPtr);
 
-	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr);
-	std::shared_ptr<Type> operator-(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr);
-	std::shared_ptr<Type> operator*(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr);
-	std::shared_ptr<Type> operator/(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr);
-	std::shared_ptr<Type> operator^(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr);
+	std::unique_ptr<Type> operator+(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr);
+	std::unique_ptr<Type> operator-(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr);
+	std::unique_ptr<Type> operator*(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr);
+	std::unique_ptr<Type> operator/(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr);
+	std::unique_ptr<Type> operator^(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr);
 
-//	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long long b);
-//	std::shared_ptr<Type> operator+(long long a, const std::shared_ptr<Type> & bPtr);
-//	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long double b);
-//	std::shared_ptr<Type> operator+(long double a, const std::shared_ptr<Type> & bPtr);
+//	std::unique_ptr<Type> operator+(const std::unique_ptr<Type> & aPtr, long long b);
+//	std::unique_ptr<Type> operator+(long long a, const std::unique_ptr<Type> & bPtr);
+//	std::unique_ptr<Type> operator+(const std::unique_ptr<Type> & aPtr, long double b);
+//	std::unique_ptr<Type> operator+(long double a, const std::unique_ptr<Type> & bPtr);
 }

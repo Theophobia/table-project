@@ -39,7 +39,7 @@ TEST_CASE("Type_createCopy_IntegerType_ExactCopy") {
 	IntegerType it(123);
 
 	// Act
-	std::shared_ptr<Type> copy = Type::createCopy(it);
+	std::unique_ptr<Type> copy = Type::createCopy(it);
 
 	// Assert
 	REQUIRE(copy != nullptr);
@@ -51,7 +51,7 @@ TEST_CASE("Type_createCopy_DoubleType_ExactCopy") {
 	DoubleType dt(123.4);
 
 	// Act
-	std::shared_ptr<Type> copy = Type::createCopy(dt);
+	std::unique_ptr<Type> copy = Type::createCopy(dt);
 
 	// Assert
 	REQUIRE(copy != nullptr);
@@ -63,7 +63,7 @@ TEST_CASE("Type_createCopy_StringType_ExactCopy") {
 	StringType st("123");
 
 	// Act
-	std::shared_ptr<Type> copy = Type::createCopy(st);
+	std::unique_ptr<Type> copy = Type::createCopy(st);
 
 	// Assert
 	REQUIRE(copy != nullptr);
@@ -75,7 +75,7 @@ TEST_CASE("Type_createCopy_FormulaType_ExactCopy") {
 	FormulaType ft("A1+A2");
 
 	// Act
-	std::shared_ptr<Type> copy = Type::createCopy(ft);
+	std::unique_ptr<Type> copy = Type::createCopy(ft);
 
 	// Assert
 	REQUIRE(copy != nullptr);
@@ -88,7 +88,7 @@ TEST_CASE("Type_fromString_PositiveInteger_ReturnsIntegerType") {
 	std::string s = std::to_string(i);
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString(s);
+	std::unique_ptr<Type> returned = Type::fromString(s);
 
 	// Assert
 	REQUIRE(returned != nullptr);
@@ -102,7 +102,7 @@ TEST_CASE("Type_fromString_NegativeInteger_ReturnsIntegerType") {
 	std::string s = std::to_string(i);
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString(s);
+	std::unique_ptr<Type> returned = Type::fromString(s);
 
 	// Assert
 	REQUIRE(returned != nullptr);
@@ -116,7 +116,7 @@ TEST_CASE("Type_fromString_PositiveDouble_ReturnsDoubleType") {
 	std::string s = std::to_string(d);
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString(s);
+	std::unique_ptr<Type> returned = Type::fromString(s);
 
 	// Assert
 	REQUIRE(returned != nullptr);
@@ -130,7 +130,7 @@ TEST_CASE("Type_fromString_NegativeDouble_ReturnsDoubleType") {
 	std::string s = std::to_string(d);
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString(s);
+	std::unique_ptr<Type> returned = Type::fromString(s);
 
 	// Assert
 	REQUIRE(returned != nullptr);
@@ -143,7 +143,7 @@ TEST_CASE("Type_fromString_String_ReturnsStringType") {
 	std::string s = "asd";
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString('"' + s + '"');
+	std::unique_ptr<Type> returned = Type::fromString('"' + s + '"');
 
 	// Assert
 	REQUIRE(returned != nullptr);
@@ -156,7 +156,7 @@ TEST_CASE("Type_fromString_Formula_ReturnsFormulaType") {
 	std::string s = "A1+A2+10";
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString('=' + s);
+	std::unique_ptr<Type> returned = Type::fromString('=' + s);
 
 	// Assert
 	REQUIRE(returned != nullptr);
@@ -170,7 +170,7 @@ TEST_CASE("Type_fromString_ZeroFractionalDouble_ReturnsIntegerType") {
 	std::string s = std::to_string(i) + ".00000";
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString(s);
+	std::unique_ptr<Type> returned = Type::fromString(s);
 
 	// Assert
 	REQUIRE(returned != nullptr);
@@ -184,7 +184,7 @@ TEST_CASE("Type_fromString_ZeroFractionalDouble_ReturnsIntegerType") {
 	std::string s = std::to_string(i) + ".00000";
 
 	// Act
-	std::shared_ptr<Type> returned = Type::fromString(s);
+	std::unique_ptr<Type> returned = Type::fromString(s);
 
 	// Assert
 	REQUIRE(returned != nullptr);

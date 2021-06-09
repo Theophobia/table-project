@@ -8,11 +8,11 @@ using namespace TableProject;
 
 TEST_CASE("operator+(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(3);
-	auto b = std::make_shared<IntegerType>(4);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(3);
+	std::unique_ptr<Type> b = std::make_unique<IntegerType>(4);
 
 	// Act
-	auto c = a + b;
+	std::unique_ptr<Type> c = a + b;
 
 	// Assert
 	auto c_cast = dynamic_cast<IntegerType *>(c.get());
@@ -22,11 +22,11 @@ TEST_CASE("operator+(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator-(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(3);
-	auto b = std::make_shared<IntegerType>(4);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(3);
+	std::unique_ptr<Type> b = std::make_unique<IntegerType>(4);
 
 	// Act
-	auto c = a - b;
+	std::unique_ptr<Type> c = a - b;
 
 	// Assert
 	auto c_cast = dynamic_cast<IntegerType *>(c.get());
@@ -36,11 +36,11 @@ TEST_CASE("operator-(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator*(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(3);
-	auto b = std::make_shared<IntegerType>(4);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(3);
+	std::unique_ptr<Type> b = std::make_unique<IntegerType>(4);
 
 	// Act
-	auto c = a * b;
+	std::unique_ptr<Type> c = a * b;
 
 	// Assert
 	auto c_cast = dynamic_cast<IntegerType *>(c.get());
@@ -50,11 +50,11 @@ TEST_CASE("operator*(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator/(IntegerType, IntegerType)_NoRemainder_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(8);
-	auto b = std::make_shared<IntegerType>(4);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(8);
+	std::unique_ptr<Type> b = std::make_unique<IntegerType>(4);
 
 	// Act
-	auto c = a / b;
+	std::unique_ptr<Type> c = a / b;
 
 	// Assert
 	auto c_cast = dynamic_cast<IntegerType *>(c.get());
@@ -64,11 +64,11 @@ TEST_CASE("operator/(IntegerType, IntegerType)_NoRemainder_ReturnedEquals") {
 
 TEST_CASE("operator/(IntegerType, IntegerType)_WithRemainder_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(7);
-	auto b = std::make_shared<IntegerType>(4);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(7);
+	std::unique_ptr<Type> b = std::make_unique<IntegerType>(4);
 
 	// Act
-	auto c = a / b;
+	std::unique_ptr<Type> c = a / b;
 
 	// Assert
 	auto c_cast = dynamic_cast<DoubleType *>(c.get());
@@ -78,11 +78,11 @@ TEST_CASE("operator/(IntegerType, IntegerType)_WithRemainder_ReturnedEquals") {
 
 TEST_CASE("operator^(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(2);
-	auto b = std::make_shared<IntegerType>(3);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(2);
+	std::unique_ptr<Type> b = std::make_unique<IntegerType>(3);
 
 	// Act
-	auto c = a ^b;
+	std::unique_ptr<Type> c = a ^b;
 
 	// Assert
 	auto c_cast = dynamic_cast<IntegerType *>(c.get());
@@ -95,11 +95,11 @@ TEST_CASE("operator^(IntegerType, IntegerType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator+(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(3);
-	auto b = std::make_shared<DoubleType>(4.5);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(3);
+	std::unique_ptr<Type> b = std::make_unique<DoubleType>(4.5);
 
 	// Act
-	auto c = a + b;
+	std::unique_ptr<Type> c = a + b;
 
 	// Assert
 	auto c_cast = dynamic_cast<DoubleType *>(c.get());
@@ -109,11 +109,11 @@ TEST_CASE("operator+(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator-(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(3);
-	auto b = std::make_shared<DoubleType>(4.5);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(3);
+	std::unique_ptr<Type> b = std::make_unique<DoubleType>(4.5);
 
 	// Act
-	auto c = a - b;
+	std::unique_ptr<Type> c = a - b;
 
 	// Assert
 	auto c_cast = dynamic_cast<DoubleType *>(c.get());
@@ -123,11 +123,11 @@ TEST_CASE("operator-(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator*(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(2);
-	auto b = std::make_shared<DoubleType>(4.5);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(2);
+	std::unique_ptr<Type> b = std::make_unique<DoubleType>(4.5);
 
 	// Act
-	auto c = a * b;
+	std::unique_ptr<Type> c = a * b;
 
 	// Assert
 	auto c_cast = dynamic_cast<DoubleType *>(c.get());
@@ -137,11 +137,11 @@ TEST_CASE("operator*(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator/(IntegerType, DoubleType)_NoRemainder_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(9);
-	auto b = std::make_shared<DoubleType>(4.5);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(9);
+	std::unique_ptr<Type> b = std::make_unique<DoubleType>(4.5);
 
 	// Act
-	auto c = a / b;
+	std::unique_ptr<Type> c = a / b;
 
 	// Assert
 	auto c_cast = dynamic_cast<IntegerType *>(c.get());
@@ -152,11 +152,11 @@ TEST_CASE("operator/(IntegerType, DoubleType)_NoRemainder_ReturnedEquals") {
 
 TEST_CASE("operator/(IntegerType, DoubleType)_WithRemainder_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(7);
-	auto b = std::make_shared<DoubleType>(4.5);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(7);
+	std::unique_ptr<Type> b = std::make_unique<DoubleType>(4.5);
 
 	// Act
-	auto c = a / b;
+	std::unique_ptr<Type> c = a / b;
 
 	// Assert
 	auto c_cast = dynamic_cast<DoubleType *>(c.get());
@@ -166,11 +166,11 @@ TEST_CASE("operator/(IntegerType, DoubleType)_WithRemainder_ReturnedEquals") {
 
 TEST_CASE("operator^(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(2);
-	auto b = std::make_shared<DoubleType>(4.5);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(2);
+	std::unique_ptr<Type> b = std::make_unique<DoubleType>(4.5);
 
 	// Act
-	auto c = a ^b;
+	std::unique_ptr<Type> c = a ^b;
 
 	// Assert
 	auto c_cast = dynamic_cast<DoubleType *>(c.get());
@@ -180,9 +180,9 @@ TEST_CASE("operator^(IntegerType, DoubleType)_GoodParams_ReturnedEquals") {
 
 TEST_CASE("operator+/operator*(IntegerType, IntegerType)_AssocDistrib_Equals") {
 	// Arrange
-	auto a = std::make_shared<IntegerType>(2);
-	auto b = std::make_shared<IntegerType>(3);
-	auto c = std::make_shared<IntegerType>(4);
+	std::unique_ptr<Type> a = std::make_unique<IntegerType>(2);
+	std::unique_ptr<Type> b = std::make_unique<IntegerType>(3);
+	std::unique_ptr<Type> c = std::make_unique<IntegerType>(4);
 
 	// Act and Assert
 	REQUIRE(*(a + b) == *(b + a));

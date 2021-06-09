@@ -8,8 +8,8 @@ namespace TableProject {
 		this->number = number;
 	}
 
-	IntegerType::operator std::shared_ptr<IntegerType>() const {
-		return std::make_shared<IntegerType>(*this);
+	IntegerType::operator std::unique_ptr<IntegerType>() const {
+		return std::make_unique<IntegerType>(*this);
 	}
 
 	std::int64_t IntegerType::getNumber() const {

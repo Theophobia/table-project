@@ -18,7 +18,7 @@ namespace TableProject {
 		while (fileIn.get(c)) {
 			if (c == ',' || c == '\n') {
 				try {
-					std::shared_ptr<Type> typePtr(Type::fromString(buffer));
+					std::unique_ptr<Type> typePtr(Type::fromString(buffer));
 					this->put(row, col, *typePtr);
 				}
 				catch (std::exception & e) {
@@ -45,7 +45,7 @@ namespace TableProject {
 			}
 		}
 		if (!buffer.empty()) {
-			std::shared_ptr<Type> typePtr(Type::fromString(buffer));
+			std::unique_ptr<Type> typePtr(Type::fromString(buffer));
 			this->put(row, col, *typePtr);
 		}
 	}
@@ -72,13 +72,13 @@ namespace TableProject {
 			throw std::out_of_range("Row out of bounds");
 		}
 
-		std::vector<std::shared_ptr<Type>> & row = table[rowIndex];
+		std::vector<std::unique_ptr<Type>> & row = table[rowIndex];
 
 		if (row.size() <= columnIndex) {
 			throw std::out_of_range("Column out of bounds");
 		}
 
-		std::shared_ptr<Type> elem = row[columnIndex];
+		std::unique_ptr<Type> & elem = row[columnIndex];
 		if (elem == nullptr) {
 			throw TableProject::NoSuchElementError("Element is null");
 		}
@@ -97,22 +97,22 @@ namespace TableProject {
 			throw std::out_of_range("Cannot insert element outside column 26");
 		}
 
-		std::shared_ptr<Type> copied = Type::createCopy(type);
+		std::unique_ptr<Type> copied = Type::createCopy(type);
 
 		// Check if row exists, if not add empty
 		while (table.size() <= rowIndex) {
 			table.emplace_back();
 		}
-		std::vector<std::shared_ptr<Type>> & specifiedRow = table.at(rowIndex);
+		std::vector<std::unique_ptr<Type>> & specifiedRow = table.at(rowIndex);
 
 		// Check if column exists, if not add empty
 		while (specifiedRow.size() <= columnIndex) {
 			specifiedRow.push_back(nullptr);
 		}
-		auto & specifiedElement = specifiedRow.at(columnIndex);
+		std::unique_ptr<Type> & specifiedElement = specifiedRow.at(columnIndex);
 
 		// Overwrites element if exists
-		specifiedElement = copied;
+		specifiedElement = std::move(copied);
 	}
 
 	std::string Table::toCSV() const {
@@ -122,13 +122,13 @@ namespace TableProject {
 				result << '\n';
 			}
 
-			auto row = table[i];
+			auto & row = table[i];
 			for (std::size_t j = 0; j < row.size(); j++) {
 				if (j != 0) {
 					result << ',';
 				}
 
-				auto elem = row[j];
+				const std::unique_ptr<Type> & elem = row[j];
 				if (elem != nullptr) {
 					result << elem->toCSV();
 				}
@@ -141,7 +141,7 @@ namespace TableProject {
 		for (std::size_t rowIndex = 0; rowIndex < table.size(); rowIndex++) {
 			auto & row = table[rowIndex];
 			for (std::size_t colIndex = 0; colIndex < row.size(); colIndex++) {
-				std::shared_ptr<Type> & elem = row[colIndex];
+				std::unique_ptr<Type> & elem = row[colIndex];
 				if (elem != nullptr && elem->getClass() == FormulaType().getClass()) {
 					((FormulaType &) *elem).calculate(*this, rowIndex + 1, colIndex + 1);
 				}
@@ -174,7 +174,7 @@ namespace TableProject {
 		for (std::size_t j = 0; j < columns; j++) {
 			for (std::size_t i = 0; i < rows; i++) {
 				try {
-					const std::shared_ptr<Type> & elem = t.table.at(i).at(j);
+					const std::unique_ptr<Type> & elem = t.table.at(i).at(j);
 					if (elem == nullptr) {
 						continue;
 					}
@@ -220,15 +220,21 @@ namespace TableProject {
 			os << "\n " << std::setw(rowsStrLen) << std::setfill(' ') << std::to_string(i + 1) << " |";
 
 			for (std::size_t j = 0; j < columns; j++) {
-				std::shared_ptr<Type> elem = nullptr;
+				std::string elemString;
 				try {
-					elem = t.table.at(i).at(j);
+					std::unique_ptr<Type> & elem = t.table.at(i).at(j);
+					// Using ostringstream to use operator<<
+					// instead of toString()
+					// as it may not be the same if changes occur
+					std::ostringstream oss;
+					oss << *elem;
+					elemString = oss.str();
 				}
 				catch (std::exception &) {}
 
 				os << ' ' << std::setw(colMaxElemLen[j]) << std::setfill(' ');
-				if (elem != nullptr) {
-					os << *elem;
+				if (!elemString.empty()) {
+					os << elemString;
 				}
 				else {
 					os << ' ';

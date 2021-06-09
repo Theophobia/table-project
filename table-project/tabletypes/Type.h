@@ -73,7 +73,7 @@ namespace TableProject {
 		 *
 		 * @throws std::invalid_argument If "t" is not of known subclass of Type.
 		 */
-		static std::shared_ptr<Type> createCopy(const Type & t);
+		static std::unique_ptr<Type> createCopy(const Type & t);
 
 		/**
 		 * Attempts to parse given string as all known subtypes of this class.
@@ -84,6 +84,6 @@ namespace TableProject {
 		 *
 		 * @throws std::invalid_argument If string could not be parsed.
 		 */
-		static std::shared_ptr<Type> fromString(const std::string & s);
+		static std::unique_ptr<Type> fromString(const std::string & s);
 	};
 }

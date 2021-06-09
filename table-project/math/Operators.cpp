@@ -8,7 +8,7 @@
 #include <table-project/TableProject.h>
 
 namespace TableProject {
-	TypeData getTypeData(const std::shared_ptr<Type> & aPtr) {
+	TypeData getTypeData(const std::unique_ptr<Type> & aPtr) {
 		TypeData td;
 
 		Type * a = aPtr.get();
@@ -52,7 +52,7 @@ namespace TableProject {
 		return td;
 	}
 
-	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr) {
+	std::unique_ptr<Type> operator+(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr) {
 		if (!aPtr || !bPtr) {
 			throw std::runtime_error("aPtr or bPtr is nullptr");
 		}
@@ -61,25 +61,25 @@ namespace TableProject {
 		TypeData btd = getTypeData(bPtr);
 
 		if (atd.hasDouble && btd.hasDouble) {
-			return std::make_shared<DoubleType>(atd.doublePart + btd.doublePart);
+			return std::make_unique<DoubleType>(atd.doublePart + btd.doublePart);
 		}
 
 		if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
-			return std::make_shared<DoubleType>(atd.doublePart + btd.integerPart);
+			return std::make_unique<DoubleType>(atd.doublePart + btd.integerPart);
 		}
 
 		if (!atd.hasDouble && btd.hasDouble) {
-			return std::make_shared<DoubleType>(atd.integerPart + btd.doublePart);
+			return std::make_unique<DoubleType>(atd.integerPart + btd.doublePart);
 		}
 
 		if (!atd.hasDouble && !btd.hasDouble) {
-			return std::make_shared<IntegerType>(atd.integerPart + btd.integerPart);
+			return std::make_unique<IntegerType>(atd.integerPart + btd.integerPart);
 		}
 
 		throw std::runtime_error("Unexpected error");
 	}
 
-	std::shared_ptr<Type> operator-(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr) {
+	std::unique_ptr<Type> operator-(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr) {
 		if (!aPtr || !bPtr) {
 			throw std::runtime_error("aPtr or bPtr is nullptr");
 		}
@@ -88,25 +88,25 @@ namespace TableProject {
 		TypeData btd = getTypeData(bPtr);
 
 		if (atd.hasDouble && btd.hasDouble) {
-			return std::make_shared<DoubleType>(atd.doublePart - btd.doublePart);
+			return std::make_unique<DoubleType>(atd.doublePart - btd.doublePart);
 		}
 
 		if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
-			return std::make_shared<DoubleType>(atd.doublePart - btd.integerPart);
+			return std::make_unique<DoubleType>(atd.doublePart - btd.integerPart);
 		}
 
 		if (!atd.hasDouble && btd.hasDouble) {
-			return std::make_shared<DoubleType>(atd.integerPart - btd.doublePart);
+			return std::make_unique<DoubleType>(atd.integerPart - btd.doublePart);
 		}
 
 		if (!atd.hasDouble && !btd.hasDouble) {
-			return std::make_shared<IntegerType>(atd.integerPart - btd.integerPart);
+			return std::make_unique<IntegerType>(atd.integerPart - btd.integerPart);
 		}
 
 		throw std::runtime_error("Unexpected error");
 	}
 
-	std::shared_ptr<Type> operator*(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr) {
+	std::unique_ptr<Type> operator*(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr) {
 		if (!aPtr || !bPtr) {
 			throw std::runtime_error("aPtr or bPtr is nullptr");
 		}
@@ -115,25 +115,25 @@ namespace TableProject {
 		TypeData btd = getTypeData(bPtr);
 
 		if (atd.hasDouble && btd.hasDouble) {
-			return std::make_shared<DoubleType>(atd.doublePart * btd.doublePart);
+			return std::make_unique<DoubleType>(atd.doublePart * btd.doublePart);
 		}
 
 		if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
-			return std::make_shared<DoubleType>(atd.doublePart * btd.integerPart);
+			return std::make_unique<DoubleType>(atd.doublePart * btd.integerPart);
 		}
 
 		if (!atd.hasDouble && btd.hasDouble) {
-			return std::make_shared<DoubleType>(atd.integerPart * btd.doublePart);
+			return std::make_unique<DoubleType>(atd.integerPart * btd.doublePart);
 		}
 
 		if (!atd.hasDouble && !btd.hasDouble) {
-			return std::make_shared<IntegerType>(atd.integerPart * btd.integerPart);
+			return std::make_unique<IntegerType>(atd.integerPart * btd.integerPart);
 		}
 
 		throw std::runtime_error("Unexpected error");
 	}
 
-	std::shared_ptr<Type> operator/(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr) {
+	std::unique_ptr<Type> operator/(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr) {
 		if (!aPtr || !bPtr) {
 			throw std::runtime_error("aPtr or bPtr is nullptr");
 		}
@@ -144,7 +144,7 @@ namespace TableProject {
 		if (atd.hasDouble && btd.hasDouble) {
 			long double num = atd.doublePart / btd.doublePart;
 			if (std::isnan(num) || std::isinf(num)) {
-				return std::make_shared<StringType>(StringType::getError());
+				return std::make_unique<StringType>(StringType::getError());
 			}
 			auto res = Type::fromString(std::to_string(num));
 			return res;
@@ -153,7 +153,7 @@ namespace TableProject {
 		if (atd.hasDouble && !btd.hasDouble) {
 			long double num = atd.doublePart / btd.integerPart;
 			if (std::isnan(num) || std::isinf(num)) {
-				return std::make_shared<StringType>(StringType::getError());
+				return std::make_unique<StringType>(StringType::getError());
 			}
 			auto res = Type::fromString(std::to_string(num));
 			return res;
@@ -162,7 +162,7 @@ namespace TableProject {
 		if (!atd.hasDouble && btd.hasDouble) {
 			long double num = ((long double) atd.integerPart) / btd.doublePart;
 			if (std::isnan(num) || std::isinf(num)) {
-				return std::make_shared<StringType>(StringType::getError());
+				return std::make_unique<StringType>(StringType::getError());
 			}
 
 			// Result may be actually an integer
@@ -186,7 +186,7 @@ namespace TableProject {
 
 			long double num = ((long double) atd.integerPart) / btd.integerPart;
 			if (std::isnan(num) || std::isinf(num)) {
-				return std::make_shared<StringType>(StringType::getError());
+				return std::make_unique<StringType>(StringType::getError());
 			}
 			auto res = Type::fromString(std::to_string(num));
 			return res;
@@ -195,7 +195,7 @@ namespace TableProject {
 		throw std::runtime_error("Unexpected error");
 	}
 
-	std::shared_ptr<Type> operator^(const std::shared_ptr<Type> & aPtr, const std::shared_ptr<Type> & bPtr) {
+	std::unique_ptr<Type> operator^(const std::unique_ptr<Type> & aPtr, const std::unique_ptr<Type> & bPtr) {
 		if (!aPtr || !bPtr) {
 			throw std::runtime_error("aPtr or bPtr is nullptr");
 		}
@@ -206,7 +206,7 @@ namespace TableProject {
 		if (atd.hasDouble && btd.hasDouble) {
 			long double num = std::pow(atd.doublePart, btd.doublePart);
 			if (std::isnan(num) || std::isinf(num)) {
-				return std::make_shared<StringType>(StringType::getError());
+				return std::make_unique<StringType>(StringType::getError());
 			}
 			auto res = Type::fromString(std::to_string(num));
 			return res;
@@ -215,7 +215,7 @@ namespace TableProject {
 		if (atd.hasDouble && !btd.hasDouble) { // Redundancy for readability
 			long double num = std::pow(atd.doublePart, btd.integerPart);
 			if (std::isnan(num) || std::isinf(num)) {
-				return std::make_shared<StringType>(StringType::getError());
+				return std::make_unique<StringType>(StringType::getError());
 			}
 			auto res = Type::fromString(std::to_string(num));
 			return res;
@@ -224,7 +224,7 @@ namespace TableProject {
 		if (!atd.hasDouble && btd.hasDouble) {
 			long double num = std::pow(atd.integerPart, btd.doublePart);
 			if (std::isnan(num) || std::isinf(num)) {
-				return std::make_shared<StringType>(StringType::getError());
+				return std::make_unique<StringType>(StringType::getError());
 			}
 			auto res = Type::fromString(std::to_string(num));
 			return res;
@@ -245,19 +245,19 @@ namespace TableProject {
 	}
 
 
-//	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long long b) {
-//		return operator+(aPtr, std::make_shared<IntegerType>(b));
+//	std::unique_ptr<Type> operator+(const std::unique_ptr<Type> & aPtr, long long b) {
+//		return operator+(aPtr, std::make_unique<IntegerType>(b));
 //	}
 //
-//	std::shared_ptr<Type> operator+(long long a, const std::shared_ptr<Type> & bPtr) {
+//	std::unique_ptr<Type> operator+(long long a, const std::unique_ptr<Type> & bPtr) {
 //		return operator+(bPtr, a);
 //	}
 //
-//	std::shared_ptr<Type> operator+(const std::shared_ptr<Type> & aPtr, long double b) {
-//		return operator+(aPtr, std::make_shared<DoubleType>(b));
+//	std::unique_ptr<Type> operator+(const std::unique_ptr<Type> & aPtr, long double b) {
+//		return operator+(aPtr, std::make_unique<DoubleType>(b));
 //	}
 //
-//	std::shared_ptr<Type> operator+(long double a, const std::shared_ptr<Type> & bPtr) {
+//	std::unique_ptr<Type> operator+(long double a, const std::unique_ptr<Type> & bPtr) {
 //		return operator+(bPtr, a);
 //	}
 }

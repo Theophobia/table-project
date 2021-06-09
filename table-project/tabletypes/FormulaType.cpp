@@ -18,7 +18,7 @@ namespace TableProject {
 			if (formula[i] == '+' || formula[i] == '-' || formula[i] == '*' || formula[i] == '/' || formula[i] == '^') {
 				if (i == formula.size() - 1) {
 					// Missing operand as operation is last character
-					obj = std::make_shared<StringType>(StringType::getError());
+					obj = std::make_unique<StringType>(StringType::getError());
 					return;
 				}
 
@@ -34,7 +34,7 @@ namespace TableProject {
 			else if (std::isalpha(formula[i])) {
 				if (i == formula.size() - 1) {
 					// Incomplete cell reference
-					obj = std::make_shared<StringType>(StringType::getError());
+					obj = std::make_unique<StringType>(StringType::getError());
 					return;
 				}
 
@@ -54,7 +54,7 @@ namespace TableProject {
 
 				// Recursion check
 				if (thisRow == rowNumber && thisCol == columnNumber) {
-					obj = std::make_shared<StringType>(StringType::getError());
+					obj = std::make_unique<StringType>(StringType::getError());
 					return;
 				}
 

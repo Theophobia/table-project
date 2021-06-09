@@ -18,11 +18,11 @@ namespace TableProject {
 		explicit IntegerType(std::int64_t number);
 
 		/**
-		 * Dynamically allocate a copy of this object and return a shared_ptr to it.
+		 * Dynamically allocate a copy of this object and return a unique_ptr to it.
 		 *
 		 * @return
 		 */
-		operator std::shared_ptr<IntegerType>() const;
+		operator std::unique_ptr<IntegerType>() const;
 
 		/**
 		 * Getter for underlying number.

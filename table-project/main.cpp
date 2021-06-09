@@ -59,7 +59,7 @@ void printUnknownCommand() {
 int run() {
 	using namespace TableProject;
 
-	std::shared_ptr<Table> tablePtr;
+	std::unique_ptr<Table> tablePtr;
 	std::string lastFileName;
 
 	printCommands();
@@ -135,9 +135,9 @@ int run() {
 						continue;
 					}
 
-					std::shared_ptr<TableProject::Table> tmpPtr;
+					std::unique_ptr<TableProject::Table> tmpPtr;
 					try {
-						tmpPtr = std::make_shared<Table>(args[1].c_str());
+						tmpPtr = std::make_unique<Table>(args[1].c_str());
 					}
 					catch (std::exception & e) {
 						std::cout << "ERROR: could not read table from file\n\t" << e.what() << std::endl;
@@ -208,7 +208,7 @@ int run() {
 			case 3: {
 				if (args[0] == "edit") {
 					if (!tablePtr) {
-						tablePtr = std::make_shared<Table>();
+						tablePtr = std::make_unique<Table>();
 						std::cout << "INFO: created new table as one does not exist" << std::endl;
 					}
 
@@ -230,7 +230,7 @@ int run() {
 							  << std::to_string(colIndex) + ")"
 							  << std::endl;
 
-					std::shared_ptr<Type> typePtr;
+					std::unique_ptr<Type> typePtr;
 					try {
 						typePtr = Type::fromString(args[2]);
 					}

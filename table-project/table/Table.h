@@ -19,7 +19,7 @@ namespace TableProject {
 	protected:
 		friend class FormulaType;
 
-		std::vector<std::vector<std::shared_ptr<Type>>> table;
+		std::vector<std::vector<std::unique_ptr<Type>>> table;
 
 	public:
 		~Table() = default;

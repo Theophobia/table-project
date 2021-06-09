@@ -19,11 +19,11 @@ namespace TableProject {
 		explicit DoubleType(long double number);
 
 		/**
-		 * Dynamically allocate a copy of this object and return a shared_ptr to it.
+		 * Dynamically allocate a copy of this object and return a unique_ptr to it.
 		 *
 		 * @return
 		 */
-		operator std::shared_ptr<DoubleType>() const;
+		operator std::unique_ptr<DoubleType>() const;
 
 		/**
 		 * Getter for underlying number.

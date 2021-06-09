@@ -5,27 +5,27 @@ namespace TableProject {
 		return os << type.toString();
 	}
 
-	std::shared_ptr<Type> Type::createCopy(const Type & t) {
+	std::unique_ptr<Type> Type::createCopy(const Type & t) {
 		if (auto it = dynamic_cast<const IntegerType *>(&t)) {
-			return std::make_shared<IntegerType>(*it);
+			return std::make_unique<IntegerType>(*it);
 		}
 
 		if (auto dt = dynamic_cast<const DoubleType *>(&t)) {
-			return std::make_shared<DoubleType>(*dt);
+			return std::make_unique<DoubleType>(*dt);
 		}
 
 		if (auto ft = dynamic_cast<const FormulaType *>(&t)) {
-			return std::make_shared<FormulaType>(*ft);
+			return std::make_unique<FormulaType>(*ft);
 		}
 
 		if (auto st = dynamic_cast<const StringType *>(&t)) {
-			return std::make_shared<StringType>(*st);
+			return std::make_unique<StringType>(*st);
 		}
 
 		throw std::invalid_argument("Type is not registered within Type::createCopy()");
 	}
 
-	std::shared_ptr<Type> Type::fromString(const std::string & s) {
+	std::unique_ptr<Type> Type::fromString(const std::string & s) {
 
 		try {
 			IntegerType it;
